@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../components/pageHead', { title: 'Sign Up' }) %>
+    <link rel="stylesheet" href="../../public/css/login_signup/root.css">
+</head>
+
+<body>
+    <%- include('../components/bodyHead') %>
+
+    <script src="../../public/js/login_signup.js"></script>
+
+    <div class="signin-wrapper">
+        <div class="signin-container">
+            <h2>Sign Up</h2>
+            <form method="POST" action="/signup" id="signUpForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+    
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+    
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+    
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+    
+                <input type="submit" value="Sign Up">
+            </form>
+            <br>
+            <a href="/signin">Already have an account?</a>
+        </div>
+    </div>
+</body>
+
+<script src="scripts/loginsignup.js"></script>
+
+</html>

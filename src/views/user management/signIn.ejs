@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../components/pageHead', { title: 'Not found' }) %>
+    <link rel="stylesheet" href="../../public/css/login_signup/root.css">
+</head>
+
+<body>
+    <%- include('../components/bodyHead') %>
+
+    <script src="../../public/js/login_signup.js"></script>
+
+    <div class="signin-wrapper">
+        <div class="signin-container">
+            <h2>Sign In</h2>
+            <form method="POST" action="/signin" id="signInForm">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+    
+                <label for "password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <input type="submit" value="Sign In">
+            </form>
+            <br>
+            <a href="/forgot-password">Forgot Password?</a>
+        </div>
+    </div>
+</body>
+</html>

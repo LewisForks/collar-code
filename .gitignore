@@ -1,0 +1,23 @@
+#                                 .-.
+#    (___________________________()6 `-,
+#    (   ______COLLAR CODE_____   /''"`
+#    //\\                      //\\
+#    "" ""                     "" ""
+# COPYRIGHT 2023 COLLARCODE TEAM
+
+# Ignore the node_modules directory
+node_modules/
+
+# Ignore the build directory
+**src/docs/**
+
+# The file containing environment variables
+**/.env
+
+# package-lock.json
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# logs
+logs/

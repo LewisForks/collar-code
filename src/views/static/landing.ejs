@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../components/pageHead', { title: 'Home' }) %>
+</head>
+
+<body>
+    <%- include('../components/bodyHead') %>
+
+    <script src="public/js/shit_code_delete_me.js"></script>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="text-welcome">
+                <h1>Your Pets Digital Pawprint</h1>
+            </div>
+            <h3><span class="typewriter"></span></h3>
+            <div class="mobile-hero-image">
+                <img src="public/static/images/lostdog.png" alt>
+            </div>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum adipisci earum explicabo sunt reiciendis
+                magnam quas asperiores, natus, est reprehenderit saepe atque dolorum soluta voluptas distinctio culpa
+                quis nostrum fugiat?</p>
+            <div class="btn-box">
+                <a href="#contact" class="btn">Get Started</a>
+                <a href="#portfolio" class="btn">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="public/static/images/lostdog.png" alt>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <h2 class="heading">About Me</h2>
+        <div class="about-img">
+            <img src="public/static/images/lostdog.png" alt>
+        </div>
+
+        <div class="about-content">
+            <h3>Lewis Raybould</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam in corrupti explicabo ut dolores nesciunt
+                ea, sit, magni accusantium laborum vel minus ullam voluptates unde facere autem. Expedita commodi iure
+                quo assumenda esse nisi inventore
+                minima dolorem! Nostrum sed molestias maxime cupiditate! Totam reiciendis impedit eaque laudantium
+                sapiente ducimus optio.</p>
+            <div class="btn-box aboutbtns">
+                <a href="#skills" class="btn aboutbtn">My Skills</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2 class="heading">Contact Me</h2>
+        <div class="contactinput">
+            <div class="contact-details">
+                <div class="contactinfo">
+                    <img
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAEY0lEQVR4Xu2ay2sTURTG751mWlBRF74qKqJgtU3FR6GhSa0DrW3TLlRwrysFce/Clf+AW/GxciG4EwSVCtFk2qBYrW0qVRQXKtT67AtjJpnxm5jUqUxmbsxkHmQGhobk5uSc3/nOnXPvLSU1ftEaj5/4AHwF1DgBvwRqXAD+JOiXgF8CNU7AL4EaF0B5T4H4nngjDdDNboYmK/JMV6rrPauPTCWQDCb35EjuKoyGWQ07Oo6S55zMnemY7Hhi5ocpALFF3AadjMLQOjNjLvt8kXI0FB4Pp4z8MgcQFC/DwOmCkSGq0GcuC3SZOwpVuvBGKP+mQm5HJiNHKwUwBQNNClHS2UC2URgTfrgZgLhXbKI5+hIgOPg5F0lF1lQK4POS/BWSkIgUFSaFBTdCSO5Lbs9JuRhKdnvRPwAwVLl5CbSK05DSxqJBKGGESrQv8ioy7yYIhbkqBp92aP2yAsBHAFAffb9wN/wpLWWET/P9oTehOTdA0Ak+A7/qVd8sA0AJnUDgKzWEk4F0oM9pCDrBi/BxJ+5GSwHA2ChSfxz1pZXZKCabns6Jzu9OKEE3eIlEkfupgmqtU4AKAHJq0/lRRyCUCl6dm8RWsVi21gNQM60HgVO4I+i8vtmhBKPg8/5VG4AeBMwRz9Ak9VQbglnwtgFwAgJL8LYC0C0HLER4ie9pn2r/amU5sAZvOwA7IJQTvCMASkyMY3yW765UCeUG7xiAakD4n+AdBVAKgpSReoTXwpdy5oT/Dd6NAFSfXgBCNyuEEgubYSKRfpZFmC19gF42dZajMsap63JmCCY24ovcYrR3vHfRSE2OAPjXcTRGjxRZOYu1wx3N+nw8wAUGQuOhD3oBjLSO7JZl+W5xfAkbphBsB6AX/AK3MKBmSiejM4qiXKwjdTeLXWOsJbaJp/wpQDmPe3UBzlKgOjYMIdgKwCj4YpYLY+4js7s0mc/h9XShRDbhr3ZzZghSP6aVejkQbAPAEnwx4Ni+2Nr6bP0V7CmcMKjfDNYTlzLrMxeEh0L233GsEGwBUE7w2kASzYl2bFefxHsC7q24JdzvsH6/Rym9Fk6F3xpNcCy/W3UAes9oSZH67dosNesRqgrA6eCL6nBkQ0RnS0yEgKMszUk5XSDrWFu3xHQ2RR0N3lAJVdoUXdoWx4+7IngDCJZuiy87GHFb8AYQ8h9Vfi4QFP8ejRFi2oay1m81xlXnaCwoqs/lHWhf0/Or5jdGH0ddcRpUCmB8f7yZy3AT6CvVRdhPKGCFEWzTs8Hh4PAtTff2AMZiOAxR21j3XTLh0WQN4mnVnncOh7k4Hj9UEYD43vgB/LdFEkbyZ20eumQkqhenVmrSSl6mClC/mQgmBvEYvI6XGzwCYBaqPdeZ6rxh5i8TANXI04NPV6Qz6cMwvMXMqJOfc4T71FDf8LBttG2WxQ9mACzGvDjGB+DFrFnps68AK2l60ZavAC9mzUqffQVYSdOLtnwFeDFrVvrsK8BKml609Rt8rExuWIynNgAAAABJRU5ErkJggg==" />
+                    <div>
+                        <h3 class="subheading">Email Address</p>
+                            <p>lewis@raybould.co</p>
+                    </div>
+                </div>
+                <div class="contactinfo">
+                    <img
+                        src="data:image/png;base64,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" />
+                    <div>
+                        <h3 class="subheading">Discord User</p>
+                            <p>mobexe</p>
+                    </div>
+                </div>
+                <div class="contactinfo">
+                    <img
+                        src="data:image/png;base64,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" />
+                    <div>
+                        <h3 class="subheading">Phone Number</p>
+                            <p>000000000000</p>
+                    </div>
+                </div>
+            </div>
+            <form id="contact-form">
+                <input type="text" name="full_name" placeholder="Full Name" required><br><br>
+                <input type="email" name="email" placeholder="Email" required><br><br>
+                <textarea id="contacttextarea" name="message" rows="4" cols="50" placeholder="Message"
+                    required></textarea><br><br>
+                <div class="btn-box contactbtns">
+                    <a class="btn contactbtn" id="contactsubmit">SUBMIT</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</body>
+
+</html>

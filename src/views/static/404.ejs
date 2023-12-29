@@ -1,0 +1,30 @@
+<html lang="en">
+
+<head>
+    <%- include('../components/pageHead', { title: 'Not found' }) %>
+</head>
+
+<body>
+    <div id="error">
+        <div class="error err-fix">
+            <h1 class="fancy-header-large">404</h1>
+            <p class="text-secondary mb-5">You requested a resource that was not found on this server.
+            <p>
+
+            <div id="btnToolbar" class="btn-toolbar mt-5 mb-1" style="justify-content: center; display: flex;">
+                <button type="button" id="btnSubmit" class="btn btn-primary btn-md me-2"
+                    onclick="window.location.href = 'javascript:history.back()';"><i class="fa-solid fa-left-long"></i>
+                    Go Back</button>
+                <button type="button" id="btnSubmit" class="btn btn-primary btn-md me-2"
+                    onclick="window.location.href = '/support';"><i class="fa-solid fa-phone"></i> Contact
+                    Support</button>
+            </div>
+
+            <p class="mt-1 text-secondary text-center fs-6">
+                &copy; Collar Code 2023
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+.verification-wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.verification-container h1 {
+    font-size: 4rem;
+}
+
+.verification-container h2,p,a {
+    font-size: 2rem;
+}
+
+.verification-container a {
+    color: lightskyblue;
+}
