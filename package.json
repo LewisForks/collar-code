@@ -27,11 +27,13 @@
         "mailersend": "^2.2.0",
         "morgan": "^1.10.0",
         "mysql": "^2.18.1",
+        "mysql2": "^3.6.5",
         "node-fetch-commonjs": "^3.3.2",
         "nodemon": "^2.0.22",
         "rotating-file-stream": "^3.2.1",
         "util": "^0.12.5",
-        "uuid": "^9.0.1"
+        "uuid": "^9.0.1",
+        "validator": "^13.11.0"
     },
     "devDependencies": {
         "jest": "^29.7.0"
