@@ -44,6 +44,20 @@ const saveVerificationData = async (connection, userId, hashedUniqueString, expi
     );
 };
 
+const getVerificationData = async (connection, userId) => {
+    try {
+        const [rows] = await connection.query(
+            'SELECT * FROM user_verification WHERE user_id = ?',
+            [userId]
+        );
+
+        return rows.length > 0 ? rows[0] : null;
+    } catch (error) {
+        console.error('Error fetching verification data:', error);
+        throw error;
+    }
+};
+
 const sendVerificationEmail = async ({ _id, email }) => {
     const connection = await pool.getConnection();
 
