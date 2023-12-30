@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../components/pageHead', { title: 'Not found' }) %>
+    <%- include('../components/pageHead', { title: 'Sign In' }) %>
     <link rel="stylesheet" href="../../public/css/login_signup/root.css">
 </head>
 
@@ -16,10 +16,14 @@
             <form method="POST" action="/signin" id="signInForm">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
+                <div class="error-message" id="emailError"></div>
     
-                <label for "password">Password:</label>
+                <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
+                <div class="error-message" id="passwordError"></div>
                 <br>
+                <div class="error-message" id="otherError"></div>
+                <div class="error-message" id="noaccountError"></div>
                 <input type="submit" value="Sign In">
             </form>
             <br>
