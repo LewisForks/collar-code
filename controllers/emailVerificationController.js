@@ -1,7 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
-const UserVerification = require('../models/userVerification');
 const mysql = require('mysql2/promise')
 
 require('dotenv').config();
