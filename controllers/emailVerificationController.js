@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const mysql = require('mysql2/promise')
+const dbHelper = require('../src/utilities/dbHelper')
 
 require('dotenv').config();
 
@@ -18,7 +19,6 @@ transporter.verify((error, success) => {
         console.log(error);
     } else {
         console.log('Ready for emails');
-        console.log(success);
     }
 });
 
@@ -32,30 +32,11 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-const hashString = async (string) => {
-    const saltRounds = 10;
-    return await bcrypt.hash(string, saltRounds);
-};
-
 const saveVerificationData = async (connection, userId, hashedUniqueString, expirationTime) => {
     await connection.query(
         'INSERT INTO user_verification (user_id, unique_string, created_at, expires_at) VALUES (?, ?, ?, ?)',
         [userId, hashedUniqueString, new Date(), new Date(Date.now() + expirationTime)]
     );
-};
-
-const getVerificationData = async (connection, userId) => {
-    try {
-        const [rows] = await connection.query(
-            'SELECT * FROM user_verification WHERE user_id = ?',
-            [userId]
-        );
-
-        return rows.length > 0 ? rows[0] : null;
-    } catch (error) {
-        console.error('Error fetching verification data:', error);
-        throw error;
-    }
 };
 
 const sendVerificationEmail = async ({ _id, email }) => {
@@ -64,7 +45,7 @@ const sendVerificationEmail = async ({ _id, email }) => {
     try {
         await connection.beginTransaction();
 
-        const currentUrl = process.env.APP_URL || "http://localhost:5000/";
+        const currentUrl = process.env.APP_URL || "http://localhost:3000/";
         const expirationTime = 6 * 60 * 60 * 1000; // 6 hr
 
         const uniqueString = uuidv4() + _id;
@@ -76,7 +57,7 @@ const sendVerificationEmail = async ({ _id, email }) => {
             html: `<p>Verify your email address to complete the signup and login to your new account.</p><p>This link <b>expires in 6 hours</b>.</p><p>Click <a href="${currentUrl}verify/${_id}/${uniqueString}">here</a> to proceed.</p>`,
         };
 
-        const hashedUniqueString = await hashString(uniqueString);
+        const hashedUniqueString = await dbHelper.hashString(uniqueString);
 
         await saveVerificationData(connection, _id, hashedUniqueString, expirationTime);
 
@@ -117,7 +98,7 @@ const checkVerification = async ({ userId, uniqueString }) => {
     const connection = await pool.getConnection();
     try {
         await connection.beginTransaction();
-        const result = await getVerificationData(connection, userId);
+        const result = await dbHelper.getVerificationData(connection, userId);
 
         if (result) {
 
