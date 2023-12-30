@@ -5,7 +5,7 @@ const fetch = require('node-fetch-commonjs');
 const fs = require('fs');
 const path = require('path');
 
-const authController = require('../../../controllers/authController');
+const signUpController = require('../../../controllers/signUpController');
 
 require('dotenv').config();
 
