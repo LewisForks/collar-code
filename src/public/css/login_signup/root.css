@@ -47,9 +47,14 @@
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 1rem;
 }
 
 .signin-container input[type="submit"]:hover {
     background: #555;
 }
 
+.error-message {
+    font-size: 1.5rem;
+    color: rgb(252, 69, 69);
+}
