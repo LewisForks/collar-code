@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const logger = require('morgan');
 const sessions = require('express-session');
+const MySQLStore = require('express-mysql-session')(sessions);
 const rfs = require('rotating-file-stream');
 const bodyParser = require('body-parser');
 
@@ -11,7 +12,9 @@ const bodyParser = require('body-parser');
 const fsp = require('fs').promises;
 const path = require('path');
 
-const authController = require('../../controllers/authController');
+const signUpController = require('../../controllers/signUpController');
+const signInController = require('../../controllers/signInController');
+const emailVerificationController = require('../../controllers/emailVerificationController');
 
 
 // Custom modules
@@ -19,6 +22,7 @@ const { makeConnection, executeMysqlQuery } = require('../utilities/mysqlHelper'
 const Router = require('./Router');
 const Logger = require('../utilities/consoleLog');
 const { decrypt } = require('../utilities/aes');
+const { error } = require('console');
 
 // Setup Config
 require('dotenv').config();
@@ -47,10 +51,21 @@ class App {
         this.app.set('views', path.join(__dirname, '..', 'views'));
         // Setup cors, sessions, cookies, logger, json and urlencoded
         this.app.use(cors());
+        const sessionStore = new MySQLStore({
+            host: process.env.MYSQL_HOST,
+            port: process.env.MYSQL_PORT,
+            user: process.env.MYSQL_USERNAME,
+            password: process.env.MYSQL_PASSWORD,
+            database: process.env.MYSQL_DATABASE,
+            clearExpired: true, // Automatically remove expired sessions
+            checkExpirationInterval: 900000, // How often expired sessions will be cleared (in milliseconds)
+            expiration: 86400000, // The maximum age of a session (in milliseconds) - 24 hours
+        });
         this.app.use(sessions({
             // This is a secret key, it is used to encrypt the session cookie
             secret: "collarcode-rsa_key-Ewvv83w3AEGJYkSTXsCV3KqFbHExunCNTS3dLzZ7gpfoxyq93wjznmNzGZYwRCPFgVrfenTKTAEULZx9JvgociZHUEdZB28o2waD6FoB2BbbKPAcvxjVg9KZTcoD2VJd",
             saveUninitialized: true,
+            store: sessionStore,
             cookie: { maxAge: 1000 * 60 * 60 * 24 },
             resave: false
         }));
@@ -111,11 +126,31 @@ class App {
         this.app.get('/signup', (req, res) => {
             return res.render('user management/signUp');
         });
-        this.app.post('/signup', authController.handleSignup);
 
-        this.app.get('/signin', (req, res) => {
-            return res.render('user management/signIn');
-        });
+        this.app.post('/signup', signUpController.handleSignup);
+
+        // this.app.post('/signup', async (req, res) => {
+        //     try {
+        //         console.log('Before handleSignup');
+        //         const signUpResult = await signUpController.handleSignup(req);
+        //         console.log('After handleSignup');
+
+        //         console.log('signupresult: ', signUpResult.status);
+
+        //         if (signUpResult.status === "FAILED") {
+        //             return res.render('user management/signUp', { error: signUpResult.message });
+        //         } else {
+        //             return res.redirect('/dashboard');
+        //         }
+        //     } catch (error) {
+        //         console.error("Error during sign-up:", error);
+        //         return res.render('static/landing', { error: "An unexpected error occurred." });
+        //     }
+        // });
+
+        this.app.get('/signin', signInController.renderSignin);
+
+        this.app.post('/signin', signInController.handleSignin);
 
         this.app.get('/verify', (req, res) => {
             return res.render('user management/verifyEmail');
@@ -127,24 +162,36 @@ class App {
 
         this.app.get('/verify/:userId/:uniqueString', async (req, res) => {
             const { userId, uniqueString } = req.params;
-        
+
             try {
-                const emailVerificationController = require('../../controllers/emailVerificationController');
-                console.log(emailVerificationController);
-                // Call your checkVerification function with userId and uniqueString
-                await emailVerificationController.checkVerification({ userId, uniqueString });
-        
-                // If verification is successful, you can render a success page or redirect
-                return res.render('user management/verificationSuccess');
+                const verificationResult = await emailVerificationController.checkVerification({ userId, uniqueString });
+
+                if (verificationResult.status === "SUCCESS") {
+                    // verification success
+                    return res.redirect('/dashboard');
+                } else {
+                    // verification failed
+                    console.error("failed")
+                    return res.render('user management/verifyEmail', { error: verificationResult.message });
+                }
             } catch (error) {
-                // Handle the error (e.g., log it or render an error page)
                 console.error(error);
-                return res.render('user management/verificationError');
+                return res.render('errorPage'); // prob best to not just 404 them aye
             }
         });
 
         this.app.get('/dashboard', (req, res) => {
             return res.render('static/dashboard');
+        });
+
+        this.app.get('/logout', (req, res) => {
+            req.session.destroy((err) => {
+                if (err) {
+                    console.error('Error destroying session when logging out:', err)
+                }
+
+                res.redirect('/signin');
+            });
         });
 
         // If no page is found, render 404
