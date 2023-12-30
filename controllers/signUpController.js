@@ -3,6 +3,7 @@ const { validateSignupInput } = require('./validationController');
 const { sendVerificationEmail } = require('./emailVerificationController');
 const path = require('path');
 const mysql = require('mysql2/promise');
+const dbHelper = require('../src/utilities/dbHelper')
 
 require('dotenv').config();
 
@@ -17,13 +18,12 @@ const pool = mysql.createPool({
 });
 
 // Function to check if a user exists in MySQL
-async function checkUserExists(connection, email) {
-    const [rows, fields] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
-    return rows.length > 0;
-}
+// async function checkUserExists(connection, email) {
+//     const [rows, fields] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
+//     return rows.length > 0;
+// }
 
 
-// Function to save a new user to MySQL
 async function saveUser(connection, name, email, password, dateOfBirth) {
     try {
         const [result] = await connection.query(
@@ -31,7 +31,7 @@ async function saveUser(connection, name, email, password, dateOfBirth) {
             [name, email, password, dateOfBirth]
         );
 
-        return result.insertId; // Return the inserted id
+        return result.insertId; 
     } catch (error) {
         console.error('Error saving user to database:', error);
         throw error;
@@ -40,7 +40,7 @@ async function saveUser(connection, name, email, password, dateOfBirth) {
 
 
 const handleSignup = async (req, res) => {
-    let connection; // Declare the connection variable outside the try-catch block
+    let connection;
 
     try {
         let { name, email, password, dateOfBirth } = req.body;
@@ -49,22 +49,21 @@ const handleSignup = async (req, res) => {
         password = password.trim();
         dateOfBirth = dateOfBirth.trim();
 
-        // Validate input
-        const validationError = validateSignupInput(name, email, password, dateOfBirth);
-        if (validationError) {
-            return res.json(validationError);
-        }
-
-        // Create a connection from the pool
         connection = await pool.getConnection();
 
-        // Check if user already exists
-        const userExists = await checkUserExists(connection, email);
+        const userExists = await dbHelper.checkUserExists(connection, email);
         if (userExists) {
             return res.json({
                 status: 'FAILED',
-                message: 'A user with that email already exists.',
+                errors: {
+                    email: "An account with this email already exists. <a href='/signin'>Sign in here</a> instead."
+                }
             });
+        }
+
+        const validationError = validateSignupInput(name, email, password, dateOfBirth);
+        if (validationError) {
+            return res.status(400).json(validationError);
         }
 
         // Hash password
