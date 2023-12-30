@@ -93,7 +93,7 @@ const sendVerificationEmail = async ({ _id, email }) => {
     } catch (error) {
         await connection.rollback();
         console.error("Error during sendVerificationEmail:", error);
-        
+
         let errorMessage = "An error occurred during email verification.";
 
         if (error.message.includes("hashing")) {
@@ -113,6 +113,61 @@ const sendVerificationEmail = async ({ _id, email }) => {
     }
 };
 
+const checkVerification = async ({ userId, uniqueString }) => {
+    const connection = await pool.getConnection();
+    try {
+        await connection.beginTransaction();
+        const result = await getVerificationData(connection, userId);
+
+        if (result) {
+
+            const { expires_at, unique_string } = result;
+
+            if (expires_at < Date.now()) {
+                await connection.execute('DELETE FROM user_verification WHERE user_id = ?', [userId]);
+                await connection.execute('DELETE FROM users WHERE user_id = ?', [userId]);
+                
+                return {
+                    status: "FAILED",
+                    message: "Link has expired. Please sign up again."
+                };
+            } else {
+                const match = await bcrypt.compare(uniqueString, unique_string);
+                console.log(match);
+
+                if (match) {
+                    await connection.execute('UPDATE users SET verified = 1 WHERE user_id = ?', [userId]);
+                    await connection.execute('DELETE FROM user_verification WHERE user_id = ?', [userId]);
+
+                    return {
+                        status: "SUCCESS",
+                        message: "Verification Successful.",
+                    };
+                } else {
+                    return {
+                        status: "FAILED",
+                        message: "Invalid vereification details passed, please check your inbox."
+                    };
+                }
+            }
+        } else {
+            return {
+                status: "FAILED",
+                message: "Account record doesn't exist or has been verified already. Please sign up or login."
+            };
+        }
+    } catch (error) {
+        console.error(error)
+        return {
+            status: "FAILED",
+            message: "An error occured. Check console or try again."
+        };
+    } finally {
+        connection.release();
+    }
+};
+
 module.exports = {
     sendVerificationEmail,
+    checkVerification,
 };
