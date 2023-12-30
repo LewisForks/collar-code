@@ -22,7 +22,7 @@ window.onload = function () {
                 }
             }).then((response) => response.json()).then((data) => {
                 if (data.status === 'PENDING') {
-                    window.location.href = '/verified?pending=true'
+                    window.location.href = '/verify'
                 }
             })
             .catch((error) => {
