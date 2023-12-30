@@ -5,6 +5,8 @@ const fetch = require('node-fetch-commonjs');
 const fs = require('fs');
 const path = require('path');
 
+const authController = require('../../../controllers/authController');
+
 require('dotenv').config();
 
 // MailerSend initialisation example
@@ -35,6 +37,8 @@ class API_User extends Router {
                 "error": "This API endpoint is invalid or has moved."
             });
         });
+
+        // this.router.post('/signup', authController.handleSignup);
 
         return this.router
     }
