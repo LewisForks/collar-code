@@ -13,6 +13,7 @@ const path = require('path');
 
 const authController = require('../../controllers/authController');
 
+
 // Custom modules
 const { makeConnection, executeMysqlQuery } = require('../utilities/mysqlHelper');
 const Router = require('./Router');
@@ -120,8 +121,26 @@ class App {
             return res.render('user management/verifyEmail');
         });
 
-        this.app.get('/verify/:userId/:uniqueString', (req, res) => {
-            return res.render('user management/verifyEmail');
+        // this.app.get('/verify/:userId/:uniqueString', (req, res) => {
+        //     return res.render('user management/verifyEmail');
+        // });
+
+        this.app.get('/verify/:userId/:uniqueString', async (req, res) => {
+            const { userId, uniqueString } = req.params;
+        
+            try {
+                const emailVerificationController = require('../../controllers/emailVerificationController');
+                console.log(emailVerificationController);
+                // Call your checkVerification function with userId and uniqueString
+                await emailVerificationController.checkVerification({ userId, uniqueString });
+        
+                // If verification is successful, you can render a success page or redirect
+                return res.render('user management/verificationSuccess');
+            } catch (error) {
+                // Handle the error (e.g., log it or render an error page)
+                console.error(error);
+                return res.render('user management/verificationError');
+            }
         });
 
         this.app.get('/dashboard', (req, res) => {
