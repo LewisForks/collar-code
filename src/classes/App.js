@@ -11,6 +11,8 @@ const bodyParser = require('body-parser');
 const fsp = require('fs').promises;
 const path = require('path');
 
+const authController = require('../../controllers/authController');
+
 // Custom modules
 const { makeConnection, executeMysqlQuery } = require('../utilities/mysqlHelper');
 const Router = require('./Router');
@@ -108,12 +110,17 @@ class App {
         this.app.get('/signup', (req, res) => {
             return res.render('user management/signUp');
         });
+        this.app.post('/signup', authController.handleSignup);
 
         this.app.get('/signin', (req, res) => {
             return res.render('user management/signIn');
         });
 
         this.app.get('/verify', (req, res) => {
+            return res.render('user management/verifyEmail');
+        });
+
+        this.app.get('/verify/:userId/:uniqueString', (req, res) => {
             return res.render('user management/verifyEmail');
         });
 
