@@ -17,13 +17,6 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-// Function to check if a user exists in MySQL
-// async function checkUserExists(connection, email) {
-//     const [rows, fields] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
-//     return rows.length > 0;
-// }
-
-
 async function saveUser(connection, name, email, password, dateOfBirth) {
     try {
         const [result] = await connection.query(
@@ -66,14 +59,11 @@ const handleSignup = async (req, res) => {
             return res.status(400).json(validationError);
         }
 
-        // Hash password
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // Create and save new user to MySQL
         userId = await saveUser(connection, name, email, hashedPassword, dateOfBirth);
 
-        // Send verification email
         const emailResponse = await sendVerificationEmail({ _id: userId, email });
 
 
@@ -87,7 +77,6 @@ const handleSignup = async (req, res) => {
         });
     } finally {
         if (connection) {
-            // Release the connection back to the pool
             connection.release();
         }
     }
