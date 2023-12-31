@@ -92,6 +92,19 @@ const getVerificationData = async (connection, userId) => {
     }
 };
 
+const getResetTokenData = async (connection, _id) => {
+    try {
+        const [rows] = await connection.query(
+            'SELECT * FROM password_reset WHERE user_id = ?',
+            [_id]
+        );
+        return rows.length > 0 ? rows[0] : null;
+    } catch (error) {
+        console.error('Error fetching verification data:', error);
+        throw error;
+    }
+};
+
 const hashString = async (string) => {
     const saltRounds = 10;
     return await bcrypt.hash(string, saltRounds);
@@ -104,5 +117,6 @@ module.exports = {
     getUserId,
     getHashedPassword,
     getVerificationData,
+    getResetTokenData,
     hashString,
 };
