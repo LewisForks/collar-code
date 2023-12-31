@@ -54,6 +54,20 @@ const getUserData = async (connection, email) => {
     }
 };
 
+const getUserId = async (connection, email) => {
+    try {
+        const [rows] = await connection.query(
+            'SELECT user_id from users where email = ?',
+            [email]
+        );
+
+        return rows.length > 0 ? rows[0] : 0;
+    } catch (error) {
+        console.error('Error fetching userId:', error)
+        throw error;
+    }
+}
+
 const getHashedPassword = async (connection, email) => {
     try {
         const userData = await getUserData(connection, email);
@@ -87,6 +101,7 @@ module.exports = {
     checkUserExists,
     checkVerified,
     getUserData,
+    getUserId,
     getHashedPassword,
     getVerificationData,
     hashString,
