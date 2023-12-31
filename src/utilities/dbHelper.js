@@ -30,10 +30,9 @@ const checkVerified = async (connection, email) => {
         );
         if (rows.length > 0) {
             const isVerified = rows[0].verified === 1;
-            console.log('isverified: ', isVerified)
             return isVerified;
         } else {
-            // If no user found with the given email, consider them not verified
+            // not verified
             return false;
         }
     } catch (error) {
