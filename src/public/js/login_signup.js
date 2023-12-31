@@ -23,14 +23,12 @@ window.onload = function () {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    // Check the status in the response
                     if (data.status === 'PENDING') {
                         window.location.href = '/verify';
                     } else if (data.status === 'FAILED') {
-                        // Clear existing error messages
                         clearErrorMessages();
 
-                        // Display validation messages
+                        // display any errors
                         if (data.errors) {
                             displayError('name', data.errors.name);
                             displayError('email', data.errors.email);
@@ -40,7 +38,7 @@ window.onload = function () {
                             return;
                         }
                     } else {
-                        // Handle other cases if needed
+                        displayError('other', "An unexpected error has occured. I actually don't know how you got here tbh")
                     }
                 })
                 .catch((error) => {
@@ -76,7 +74,7 @@ window.onload = function () {
                         displayError('noaccount', data.errors.noaccount);
                         displayError('other', data.errors.other);
                     } else {
-                        alert("Incorrect Login Data.");
+                        displayError('other', 'An unexpected error has occured.')
                     }
                 })
                 .catch((error) => {
@@ -85,7 +83,7 @@ window.onload = function () {
         });
     }
 
-    // Helper function to clear error messages
+    // clear error messages
     function clearErrorMessages() {
         const errorElements = document.querySelectorAll('.error-message');
         errorElements.forEach((element) => {
@@ -93,7 +91,7 @@ window.onload = function () {
         });
     }
 
-    // Helper function to display error messages
+    // display error messages
     function displayError(field, message) {
         const errorElement = document.getElementById(`${field}Error`);
 
