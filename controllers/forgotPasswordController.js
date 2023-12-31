@@ -1,7 +1,6 @@
-const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
+const mysql = require('mysql2/promise');
 const dbHelper = require('../src/utilities/dbHelper');
 
 require('dotenv').config();
