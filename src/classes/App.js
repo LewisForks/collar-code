@@ -130,25 +130,6 @@ class App {
 
         this.app.post('/signup', signUpController.handleSignup);
 
-        // this.app.post('/signup', async (req, res) => {
-        //     try {
-        //         console.log('Before handleSignup');
-        //         const signUpResult = await signUpController.handleSignup(req);
-        //         console.log('After handleSignup');
-
-        //         console.log('signupresult: ', signUpResult.status);
-
-        //         if (signUpResult.status === "FAILED") {
-        //             return res.render('user management/signUp', { error: signUpResult.message });
-        //         } else {
-        //             return res.redirect('/dashboard');
-        //         }
-        //     } catch (error) {
-        //         console.error("Error during sign-up:", error);
-        //         return res.render('static/landing', { error: "An unexpected error occurred." });
-        //     }
-        // });
-
         this.app.get('/signin', signInController.renderSignin);
 
         this.app.post('/signin', signInController.handleSignin);
@@ -156,10 +137,6 @@ class App {
         this.app.get('/verify', (req, res) => {
             return res.render('user management/verifyEmail');
         });
-
-        // this.app.get('/verify/:userId/:uniqueString', (req, res) => {
-        //     return res.render('user management/verifyEmail');
-        // });
 
         this.app.get('/verify/:userId/:uniqueString', async (req, res) => {
             const { userId, uniqueString } = req.params;
