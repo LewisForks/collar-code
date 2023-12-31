@@ -1,5 +1,6 @@
 const { connect } = require('mongoose');
 const mysql = require('mysql2/promise');
+const bcrypt = require('bcrypt');
 
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
