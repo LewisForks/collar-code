@@ -1,0 +1,86 @@
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.form-container {
+    background: #0a0720;
+    padding: 2rem;
+    width: 50rem;
+    border-radius: 5%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.form-container h2 {
+    margin: 0 0 20px;
+    color: #fff;
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+.form-container label {
+    display: block;
+    margin: 10px 0;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.form-container input[type="email"],
+.form-container input[type="password"],
+.form-container input[type="text"],
+.form-container input[type="date"] {
+    width: 80%;
+    padding: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #7a7a7a;
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+.form-container input[type="submit"] {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.form-container input[type="submit"]:hover {
+    background: #555;
+}
+
+.error-message {
+    font-size: 1.5rem;
+    color: rgb(252, 69, 69);
+}
+
+.form-container h1 {
+    font-size: 4rem;
+}
+
+.form-container h2,p,a {
+    font-size: 2rem;
+}
+
+.form-container a {
+    color: lightskyblue;
+    font-size: 1.5rem;
+}
+
+.submitted-container  h1 {
+    font-size: 4rem;
+}
+
+.submitted-container  h2,p,a {
+    font-size: 2rem;
+}
+
+.submitted-container  a {
+    color: lightskyblue;
+}
