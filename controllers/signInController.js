@@ -82,7 +82,7 @@ const handleSignin = async (req, res) => {
             return res.json({
                 status: "FAILED",
                 errors: {
-                    noaccount: "Email is not assosiated with an account. <a href='/signup'>Sign up here</a> instead."
+                    other: "Email is not assosiated with an account. <a href='/signup'>Sign up here</a> instead."
                 }
             })
         }
