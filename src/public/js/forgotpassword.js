@@ -1,14 +1,12 @@
 window.onload = function () {
-    document.getElementById('forgotPasswordForm').addEventListener('submit', function (event) {
+    document.getElementById('resetPasswordForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
-        const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
 
         fetch('/forgot-password', {
             method: 'POST',
             body: JSON.stringify({
-                name: name,
                 email: email,
             }),
             headers: {
@@ -17,26 +15,26 @@ window.onload = function () {
         })
             .then((response) => response.json())
             .then((data) => {
-                // Check the status in the response
+
                 if (data.status === 'PENDING') {
-                    window.location.href = '/verify';
+                    var submittedContainer = document.querySelector('.submitted-container');
+                    var forgotPasswordForm = document.querySelector('.form-container');
+
+                    if (submittedContainer && forgotPasswordForm) {
+                        submittedContainer.style.display = 'block';
+                        forgotPasswordForm.style.display = 'none';
+                    }
                 } else if (data.status === 'FAILED') {
-                    // Clear existing error messages
-                    clearErrorMessages();
-
-                    // Display validation messages
-                    if (data.errors) {
-                        displayError('name', data.errors.name);
-                        displayError('email', data.errors.email);
-
-                        return;
+                    if (submittedContainer && forgotPasswordForm) {
+                        submittedContainer.style.display = 'block';
+                        forgotPasswordForm.style.display = 'none';
                     }
                 } else {
-                    // Handle other cases if needed
+                    displayError('other', 'An unexpected error has occured.')
                 }
             })
             .catch((error) => {
-                console.error('Error during signup:', error);
+                console.error('Error during password reset:', error);
             });
     });
 
@@ -46,15 +44,15 @@ window.onload = function () {
             element.textContent = '';
         });
     }
-    
+
     function displayError(field, message) {
         const errorElement = document.getElementById(`${field}Error`);
-    
+
         if (errorElement) {
             if (message && /<[a-z][\s\S]*>/i.test(message)) {
                 errorElement.innerHTML = message;
             } else {
-    
+
                 errorElement.textContent = message || '';
             }
         }
