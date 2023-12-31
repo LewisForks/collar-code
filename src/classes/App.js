@@ -15,6 +15,7 @@ const path = require('path');
 const signUpController = require('../../controllers/signUpController');
 const signInController = require('../../controllers/signInController');
 const emailVerificationController = require('../../controllers/emailVerificationController');
+const forgotPasswordController = require('../../controllers/forgotPasswordController');
 
 
 // Custom modules
@@ -173,6 +174,32 @@ class App {
                     // verification failed
                     console.error("failed")
                     return res.render('user management/verifyEmail', { error: verificationResult.message });
+                }
+            } catch (error) {
+                console.error(error);
+                return res.render('errorPage'); // prob best to not just 404 them aye
+            }
+        });
+
+        this.app.get('/forgot-password', (req, res) => {
+            return res.render('user management/forgotPasswordForm');
+        });
+
+        this.app.post('/forgot-password', forgotPasswordController.sendPasswordResetEmail);
+
+        this.app.get('/forgot-password/:_id/:token', async (req, res) => {
+            const { _id, token } = req.params;
+
+            try {
+                const forgotPasswordResult = await forgotPasswordController.checkResetToken({ _id, token });
+
+                if (forgotPasswordResult.status === "SUCCESS") {
+                    // verification success
+                    return res.render('user management/resetPasswordForm');
+                } else {
+                    // verification failed
+                    console.log(forgotPasswordResult.errors);
+                    return res.render('user management/forgotPasswordForm', { error: forgotPasswordResult.error });
                 }
             } catch (error) {
                 console.error(error);
