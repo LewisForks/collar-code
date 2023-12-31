@@ -114,7 +114,6 @@ const checkVerification = async ({ userId, uniqueString }) => {
                 };
             } else {
                 const match = await bcrypt.compare(uniqueString, unique_string);
-                console.log(match);
 
                 if (match) {
                     await connection.execute('UPDATE users SET verified = 1 WHERE user_id = ?', [userId]);
