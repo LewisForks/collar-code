@@ -172,7 +172,8 @@ class App {
 
                 if (forgotPasswordResult.status === "SUCCESS") {
                     // verification success
-                    return res.render('user management/resetPasswordForm');
+                    console.log(_id, token)
+                    return res.render('user management/resetPasswordForm', { _id, token });
                 } else {
                     // verification failed
                     console.log(forgotPasswordResult.errors);
@@ -183,6 +184,8 @@ class App {
                 return res.render('errorPage'); // prob best to not just 404 them aye
             }
         });
+
+        this.app.post('/reset-password/:_id/:token', forgotPasswordController.resetPassword);
 
         this.app.get('/dashboard', (req, res) => {
             return res.render('static/dashboard');
