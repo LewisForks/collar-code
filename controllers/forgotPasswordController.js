@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const mysql = require('mysql2/promise');
 const dbHelper = require('../src/utilities/dbHelper');
+const { validateResetPasswordInput } = require('./validationController');
 
 require('dotenv').config();
 
@@ -100,6 +101,7 @@ const checkResetToken = async ({ _id, token }) => {
     try {
         await connection.beginTransaction();
         const result = await dbHelper.getResetTokenData(connection, _id);
+        console.log('result from here:', result);
         if (result) {
             const { expires_at, token: storedToken } = result;
 
@@ -161,7 +163,59 @@ const checkResetToken = async ({ _id, token }) => {
     }
 };
 
+const resetPassword = async (req, res) => {
+    let password = req.body.password;
+    let _id = req.params._id
+    let token = req.params.token
+    const connection = await pool.getConnection();
+
+    try {
+        await connection.beginTransaction();
+
+        tokenResult = await checkResetToken({ _id, token });
+
+        if (tokenResult.status === "SUCCESS") {
+            const validationError = validateResetPasswordInput(password)
+            if (validationError) {
+                return res.status(400).json(validationError);
+            }
+
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+            const saveNewPassword = await dbHelper.changePassword(connection, _id, hashedPassword);
+
+            if (saveNewPassword) {
+                res.json({
+                    status: "SUCCESS",
+                });
+                await connection.execute('DELETE FROM password_reset WHERE user_id = ?', [_id]);
+                connection.commit();
+            } else {
+                res.json({
+                    status: "FAILED",
+                    errors: {
+                        other: 'Failed to save new password, please try again.'
+                    }
+                });
+
+                await connection.rollback();
+            }
+        }
+
+    } catch (error) {
+        console.error(error);
+        return {
+            status: "FAILED",
+            error: "An error has occured. Try again."
+        };
+    } finally {
+        connection.release();
+    }
+}
+
 module.exports = {
     sendPasswordResetEmail,
     checkResetToken,
+    resetPassword,
 };
