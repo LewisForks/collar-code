@@ -48,7 +48,6 @@ const handleSignin = async (req, res) => {
 
         if (userExists) {
             const checkVerified = await dbHelper.checkVerified(connection, email);
-
             if (!checkVerified) {
                 return res.json({
                     status: "FAILED",

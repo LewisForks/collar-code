@@ -118,11 +118,13 @@ const checkVerification = async ({ userId, uniqueString }) => {
                 if (match) {
                     await connection.execute('UPDATE users SET verified = 1 WHERE user_id = ?', [userId]);
                     await connection.execute('DELETE FROM user_verification WHERE user_id = ?', [userId]);
-
+                    
+                    await connection.commit()
                     return {
                         status: "SUCCESS",
                         message: "Verification Successful.",
                     };
+
                 } else {
                     return {
                         status: "FAILED",
