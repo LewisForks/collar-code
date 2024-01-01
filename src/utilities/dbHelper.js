@@ -100,7 +100,7 @@ const getResetTokenData = async (connection, _id) => {
         );
         return rows.length > 0 ? rows[0] : null;
     } catch (error) {
-        console.error('Error fetching verification data:', error);
+        console.error('Error fetching reset token data:', error);
         throw error;
     }
 };
