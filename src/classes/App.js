@@ -188,7 +188,12 @@ class App {
         this.app.post('/reset-password/:_id/:token', forgotPasswordController.resetPassword);
 
         this.app.get('/dashboard', (req, res) => {
-            return res.render('static/dashboard');
+            if (req.session.user) {
+                return res.render('static/dashboard');
+            } else {
+                return res.redirect('/signin')
+                // would be good to tell the user their session expired at some point
+            }
         });
 
         this.app.get('/logout', (req, res) => {
