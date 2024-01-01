@@ -39,6 +39,29 @@ const validateSignupInput = (name, email, password, dateOfBirth) => {
     };
 };
 
+const validateResetPasswordInput = (password) => {
+
+    const errors = {};
+
+    // Validate password
+    if (!password || !validator.isLength(password, { min: 8 })) {
+        errors.password = "Password must be at least 8 characters.";
+    }
+
+    // Check if there are any validation errors
+    if (Object.keys(errors).length === 0) {
+        return null; // No errors, validation successful
+    }
+
+    // Return the validation errors
+    return {
+        status: "FAILED",
+        message: "Validation failed.",
+        errors,
+    };
+};
+
 module.exports = {
     validateSignupInput,
+    validateResetPasswordInput,
 };
