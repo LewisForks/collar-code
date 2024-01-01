@@ -105,6 +105,19 @@ const getResetTokenData = async (connection, _id) => {
     }
 };
 
+const changePassword = async (connection, _id, password) => {
+    try {
+        const [rows] = await connection.query(
+            'UPDATE users SET password = ? WHERE user_id = ?',
+            [password, _id]
+        );
+        return rows.affectedRows > 0 ? true : false;
+    } catch (error) {
+        console.error('Error changing users password data:', error);
+        throw error;
+    }
+}
+
 const hashString = async (string) => {
     const saltRounds = 10;
     return await bcrypt.hash(string, saltRounds);
@@ -118,5 +131,6 @@ module.exports = {
     getHashedPassword,
     getVerificationData,
     getResetTokenData,
+    changePassword,
     hashString,
 };
