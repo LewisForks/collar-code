@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const mysql = require('mysql2/promise')
-const dbHelper = require('../src/utilities/dbHelper')
+const dbHelper = require('../../src/utilities/dbHelper')
 
 require('dotenv').config();
 

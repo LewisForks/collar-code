@@ -3,7 +3,7 @@ const { validateSignupInput } = require('./validationController');
 const { sendVerificationEmail } = require('./emailVerificationController');
 const path = require('path');
 const mysql = require('mysql2/promise');
-const dbHelper = require('../src/utilities/dbHelper')
+const dbHelper = require('../../src/utilities/dbHelper')
 
 require('dotenv').config();
 

@@ -12,10 +12,10 @@ const bodyParser = require('body-parser');
 const fsp = require('fs').promises;
 const path = require('path');
 
-const signUpController = require('../../controllers/signUpController');
-const signInController = require('../../controllers/signInController');
-const emailVerificationController = require('../../controllers/emailVerificationController');
-const forgotPasswordController = require('../../controllers/forgotPasswordController');
+const signUpController = require('../../src/controllers/signUpController');
+const signInController = require('../../src/controllers/signInController');
+const emailVerificationController = require('../../src/controllers/emailVerificationController');
+const forgotPasswordController = require('../../src/controllers/forgotPasswordController');
 
 
 // Custom modules
