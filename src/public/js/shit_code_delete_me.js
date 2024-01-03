@@ -65,21 +65,24 @@ window.onscroll = () => {
 };
 
 // contact form functionality (opens mail app)
+/**
+ * Currently throwing errors because it can't use addEventListener. Will fix later with a proper form & api endpoint.
+ **/
 
-document.getElementById('contactsubmit').addEventListener('click', function () {
-    document.getElementById('contact-form').submit();
-});
+// document.getElementById('contactsubmit').addEventListener('click', function () {
+//     document.getElementById('contact-form').submit();
+// });
 
-const contactForm = document.getElementById("contact-form");
-const contactSubmit = document.getElementById("contactsubmit");
-const contactTextarea = document.getElementById("contacttextarea");
+// const contactForm = document.getElementById("contact-form");
+// const contactSubmit = document.getElementById("contactsubmit");
+// const contactTextarea = document.getElementById("contacttextarea");
 
-contactSubmit.addEventListener("click", function () {
-    const fullName = contactForm.full_name.value;
-    const email = contactForm.email.value;
-    const message = contactTextarea.value;
-    const subject = encodeURIComponent("Contact Form Submission");
+// contactSubmit.addEventListener("click", function () {
+//     const fullName = contactForm.full_name.value;
+//     const email = contactForm.email.value;
+//     const message = contactTextarea.value;
+//     const subject = encodeURIComponent("Contact Form Submission");
 
-    const mailtoLink = `mailto:lewis@raybould.co?subject=${subject}&body=${encodeURIComponent(message)}`;
-    window.location.href = mailtoLink;
-});
+//     const mailtoLink = `mailto:lewis@raybould.co?subject=${subject}&body=${encodeURIComponent(message)}`;
+//     window.location.href = mailtoLink;
+// });

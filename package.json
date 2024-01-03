@@ -13,6 +13,7 @@
     "license": "MIT",
     "dependencies": {
         "axios": "^1.6.3",
+        "bcrypt": "^5.1.1",
         "body-parser": "^1.20.2",
         "chalk": "^4.1.2",
         "cookie-parser": "^1.4.6",
@@ -30,6 +31,7 @@
         "mysql": "^2.18.1",
         "mysql2": "^3.6.5",
         "node-fetch-commonjs": "^3.3.2",
+        "nodemailer": "^6.9.8",
         "nodemon": "^2.0.22",
         "rotating-file-stream": "^3.2.1",
         "util": "^0.12.5",

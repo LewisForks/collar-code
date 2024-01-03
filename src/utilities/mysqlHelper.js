@@ -34,8 +34,10 @@ async function executeMysqlQuery(query, params) {
         Logger.mysql(query, params);
         connection.query(query, params, (error, results, fields) => {
             if (error) {
+                connection.rollback();
                 reject(error);
             }
+
             resolve(results);
         });
     });
@@ -48,6 +50,7 @@ async function endConnection() {
             if (error) {
                 reject(error);
             }
+            
             resolve();
         });
     });

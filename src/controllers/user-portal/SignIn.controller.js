@@ -1,9 +1,8 @@
 const bcrypt = require('bcrypt');
-const { validateSignupInput } = require('./validationController');
-const { sendVerificationEmail } = require('./emailVerificationController');
-const path = require('path');
+const { validateSignupInput } = require('./Validation.controller');
+const { sendVerificationEmail } = require('./EmailVerification.controller');
 const mysql = require('mysql2/promise');
-const dbHelper = require('../../src/utilities/dbHelper');
+const dbHelper = require('../../utilities/data/User')
 
 require('dotenv').config();
 
