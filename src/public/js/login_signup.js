@@ -52,7 +52,7 @@ window.onload = function () {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            fetch('/signin', {
+            fetch('/api/user-portal/signin', {
                 method: 'POST',
                 body: JSON.stringify({
                     email: email,

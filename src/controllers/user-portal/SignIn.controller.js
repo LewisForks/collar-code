@@ -3,18 +3,19 @@ const { validateSignupInput } = require('./Validation.controller');
 const { sendVerificationEmail } = require('./EmailVerification.controller');
 const mysql = require('mysql2/promise');
 const dbHelper = require('../../utilities/data/User')
+const mysqlHelper = require('../../utilities/mysqlHelper');
 
 require('dotenv').config();
 
-const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USERNAME,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
+// const pool = mysql.createPool({
+//     host: process.env.MYSQL_HOST,
+//     user: process.env.MYSQL_USERNAME,
+//     password: process.env.MYSQL_PASSWORD,
+//     database: process.env.MYSQL_DATABASE,
+//     waitForConnections: true,
+//     connectionLimit: 10,
+//     queueLimit: 0
+// });
 
 const renderSignin = (req, res) => {
     if (req.session.user) {
@@ -25,7 +26,6 @@ const renderSignin = (req, res) => {
 }
 
 const handleSignin = async (req, res) => {
-    let connection;
 
     try {
         let { email, password } = req.body;
@@ -41,12 +41,10 @@ const handleSignin = async (req, res) => {
             });
         }
 
-        connection = await pool.getConnection();
-
-        const userExists = await dbHelper.checkUserExists(connection, email);
-
+        const userExists = await dbHelper.checkUserExists(email);
         if (userExists) {
-            const checkVerified = await dbHelper.checkVerified(connection, email);
+            
+            const checkVerified = await dbHelper.checkVerified(email);
             if (!checkVerified) {
                 return res.json({
                     status: "FAILED",
@@ -56,7 +54,7 @@ const handleSignin = async (req, res) => {
                 });
             }
 
-            const hashedPassword = await dbHelper.getHashedPassword(connection, email);
+            const hashedPassword = await dbHelper.getHashedPassword(email);
             const match = await bcrypt.compare(password, hashedPassword);
 
             if (match) {
@@ -92,10 +90,6 @@ const handleSignin = async (req, res) => {
                 other: 'An error occured during login, please try again.'
             }
         });
-    } finally {
-        if (connection) {
-            connection.release();
-        }
     }
 };
 

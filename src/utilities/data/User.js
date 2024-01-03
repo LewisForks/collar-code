@@ -4,8 +4,9 @@ const { executeMysqlQuery } = require("../mysqlHelper");
 
 async function checkUserExists(email) {
     try {
-        const [rows, fields] = await executeMysqlQuery('SELECT * FROM users WHERE email = ?', [email])
-        return rows.length > 0;
+        const query = await executeMysqlQuery('SELECT * FROM users WHERE email = ?', [email])
+        console.log(query);
+        return query.length > 0;
     } catch (error) {
         Logger.error('Error checking if user exists:', error);
         throw error;
@@ -14,7 +15,8 @@ async function checkUserExists(email) {
 
 const checkVerified = async (email) => {
     try {
-        const [rows] = await executeMysqlQuery('SELECT verified FROM users WHERE email = ?', [email]);
+        const rows = await executeMysqlQuery('SELECT verified FROM users WHERE email = ?', [email]);
+        console.log(rows)
 
         if (rows.length > 0) {
             const isVerified = rows[0].verified === 1;
@@ -31,7 +33,7 @@ const checkVerified = async (email) => {
 
 const getUserData = async (email) => {
     try {
-        const [rows] = await executeMysqlQuery('SELECT * FROM users WHERE email = ?', [email]);
+        const rows = await executeMysqlQuery('SELECT * FROM users WHERE email = ?', [email]);
         return rows.length > 0 ? rows[0] : null;
     } catch (error) {
         Logger.error('Error getting user data:', error);
@@ -41,7 +43,7 @@ const getUserData = async (email) => {
 
 const getUserId = async (email) => {
     try {
-        const [rows] = await executeMysqlQuery('SELECT user_id from users where email = ?', [email]);
+        const rows = await executeMysqlQuery('SELECT user_id from users where email = ?', [email]);
 
         return rows.length > 0 ? rows[0] : 0;
     } catch (error) {
@@ -52,7 +54,7 @@ const getUserId = async (email) => {
 
 const getHashedPassword = async (email) => {
     try {
-        const userData = await getUserData(connection, email);
+        const userData = await getUserData(email);
         return userData ? userData.password : null;
     } catch (error) {
         Logger.error('Error getting hashed password:', error);
@@ -62,7 +64,7 @@ const getHashedPassword = async (email) => {
 
 const getVerificationData = async (userId) => {
     try {
-        const [rows] = await executeMysqlQuery('SELECT * FROM user_verification WHERE user_id = ?', [userId]);
+        const rows = await executeMysqlQuery('SELECT * FROM user_verification WHERE user_id = ?', [userId]);
 
         return rows.length > 0 ? rows[0] : null;
     } catch (error) {
@@ -73,7 +75,7 @@ const getVerificationData = async (userId) => {
 
 const getResetTokenData = async (_id) => {
     try {
-        const [rows] = await executeMysqlQuery('SELECT * FROM password_reset WHERE user_id = ?', [_id]);
+        const rows = await executeMysqlQuery('SELECT * FROM password_reset WHERE user_id = ?', [_id]);
         return rows.length > 0 ? rows[0] : null;
     } catch (error) {
         Logger.error('Error getting reset token data:', error);
@@ -83,7 +85,7 @@ const getResetTokenData = async (_id) => {
 
 const changePassword = async (_id, password) => {
     try {
-        const [rows] = await executeMysqlQuery('UPDATE users SET password = ? WHERE user_id = ?', [password, _id]);
+        const rows = await executeMysqlQuery('UPDATE users SET password = ? WHERE user_id = ?', [password, _id]);
         return rows.affectedRows > 0 ? true : false;
     } catch (error) {
         Logger.error('Error changing password:', error);
