@@ -84,3 +84,7 @@
 .submitted-container  a {
     color: lightskyblue;
 }
+
+#verification-success {
+    color: limegreen;
+}
