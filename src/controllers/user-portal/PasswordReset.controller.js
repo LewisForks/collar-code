@@ -1,27 +1,27 @@
 const { v4: uuidv4 } = require('uuid');
-// const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 const mysql = require('mysql2/promise');
 const dbHelper = require('../../utilities/data/User')
 const { validateResetPasswordInput } = require('./Validation.controller');
+const { decrypt } = require('../../utilities/aes');
 
 require('dotenv').config();
 
-// let transporter = nodemailer.createTransport({
-//     service: "gmail",
-//     auth: {
-//         user: process.env.AUTH_EMAIL,
-//         pass: process.env.AUTH_PASS,
-//     }
-// });
+let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: process.env.AUTH_EMAIL,
+        pass: process.env.AUTH_PASS,
+    }
+});
 
-// transporter.verify((error, success) => {
-//     if (error) {
-//         console.log(error);
-//     } else {
-//         console.log('Ready for emails');
-//     }
-// });
+transporter.verify((error, success) => {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Ready for emails');
+    }
+});
 
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -131,8 +131,8 @@ const checkResetToken = async ({ _id, token }) => {
                     };
                 }
             } else {
-                const match = await bcrypt.compare(token, storedToken);
-                console.log(match);
+                const decryptedToken = decrypt(storedToken);
+                console.log(decryptedToken === token);
 
                 if (match) {
                     return {
@@ -180,8 +180,7 @@ const resetPassword = async (req, res) => {
                 return res.status(400).json(validationError);
             }
 
-            const saltRounds = 10;
-            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            const hashedPassword = await dbHelper.hashString(password);
 
             const saveNewPassword = await dbHelper.changePassword(connection, _id, hashedPassword);
 
