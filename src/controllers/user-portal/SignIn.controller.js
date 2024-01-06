@@ -1,21 +1,11 @@
-const bcrypt = require('bcrypt');
 const { validateSignupInput } = require('./Validation.controller');
 const { sendVerificationEmail } = require('./EmailVerification.controller');
 const mysql = require('mysql2/promise');
 const dbHelper = require('../../utilities/data/User')
 const mysqlHelper = require('../../utilities/mysqlHelper');
+const { decrypt } = require('../../utilities/aes');
 
 require('dotenv').config();
-
-// const pool = mysql.createPool({
-//     host: process.env.MYSQL_HOST,
-//     user: process.env.MYSQL_USERNAME,
-//     password: process.env.MYSQL_PASSWORD,
-//     database: process.env.MYSQL_DATABASE,
-//     waitForConnections: true,
-//     connectionLimit: 10,
-//     queueLimit: 0
-// });
 
 const renderSignin = (req, res) => {
     if (req.session.user) {
@@ -55,9 +45,9 @@ const handleSignin = async (req, res) => {
             }
 
             const hashedPassword = await dbHelper.getHashedPassword(email);
-            const match = await bcrypt.compare(password, hashedPassword);
+            const decryptedPassword = decrypt(hashedPassword);
 
-            if (match) {
+            if (decryptedPassword === password) {
                 req.session.user = {
                     email: email,
                 };
