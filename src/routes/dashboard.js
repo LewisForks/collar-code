@@ -7,7 +7,14 @@ class DashboardRoutes extends Router {
     }
 
     createRoute() {
-        this.router.get('/', (req, res) => res.render('static/dashboard'));
+
+        this.router.get('/', (req, res) => {
+            if (req.session && req.session.user) {
+                res.render('static/dashboard');
+            } else {
+                res.redirect('/account/signin?sessionexpired');
+            }
+        });
 
         this.router.use((req, res) => {
             res.status(404).render('static/404')
