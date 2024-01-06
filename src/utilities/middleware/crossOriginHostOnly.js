@@ -1,6 +1,7 @@
 const cors = require('cors');
 
-const whitelist = [process.env.HOSTNAME]
+const whitelist = process.env.HOSTNAMES.split(',');
+
 const corsOptions = {
     origin: (origin, callback) => {
         if ((whitelist.indexOf(origin) !== -1)) {
