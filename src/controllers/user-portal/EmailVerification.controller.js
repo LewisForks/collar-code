@@ -1,6 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt');
 const mysql = require('mysql2/promise')
 const dbHelper = require('../../utilities/data/User');
 const { executeMysqlQuery } = require('../../utilities/mysqlHelper');
@@ -35,7 +34,7 @@ const sendVerificationEmail = async ({ _id, email }) => {
 
     try {
 
-        const currentUrl = process.env.APP_URL || "http://localhost:3000/";
+        const currentUrl = process.env.APP_URL || "http://127.0.0.1:3000/";
         const expirationTime = 6 * 60 * 60 * 1000; // 6 hr
 
         const uniqueString = uuidv4() + _id;
@@ -97,7 +96,7 @@ const checkVerification = async ({ userId, uniqueString }) => {
                 };
             } else {
                 console.log('1:', uniqueString, '2:', unique_string)
-                const decryptedString = await decrypt(unique_string);
+                const decryptedString = decrypt(unique_string);
                 if (decryptedString === uniqueString) {
                     await executeMysqlQuery('UPDATE users SET verified = 1 WHERE user_id = ?', [userId]);
                     await executeMysqlQuery('DELETE FROM user_verification WHERE user_id = ?', [userId]);
