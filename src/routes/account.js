@@ -1,5 +1,6 @@
 const Router = require('../classes/Router');
 const { sendPasswordResetEmail, resetPassword } = require('../controllers/user-portal/PasswordReset.controller');
+const { checkVerification } = require('../controllers/user-portal/EmailVerification.controller');
 require('dotenv').config();
 
 class AccountRouter extends Router {
@@ -12,8 +13,20 @@ class AccountRouter extends Router {
          * Render Routes
          */
         this.router.get('/', (req, res) => res.redirect('/account/signin'));
-        this.router.get('/signup', (req, res) => res.render('user management/signUp'));
-        this.router.get('/signin', (req, res) => res.render('user management/signIn'));
+        this.router.get('/signup', (req, res) => {
+            if (req.session && req.session.user) {
+                res.redirect('/dashboard');
+            } else {
+                res.render('user management/signUp')
+            }
+        });
+        this.router.get('/signin', (req, res) => {
+            if (req.session && req.session.user) {
+                res.redirect('/dashboard');
+            } else {
+                res.render('user management/signIn');
+            }
+        });
         this.router.get('/verify', (req, res) => res.render('user management/verifyEmail'));
         this.router.get('/forgot-password', (req, res) => res.render('user management/forgotPasswordForm'));
         this.router.get('/logout', (req, res) => { req.session.destroy(); res.redirect('/account/signin'); });
@@ -25,11 +38,11 @@ class AccountRouter extends Router {
             const { userId, uniqueString } = req.params;
 
             try {
-                const verificationResult = await emailVerificationController.checkVerification({ userId, uniqueString });
+                const verificationResult = await checkVerification({ userId, uniqueString });
 
                 if (verificationResult.status === "SUCCESS") {
                     // verification success
-                    return res.redirect('/dashboard');
+                    return res.redirect('/account/signin?verificationsuccess');
                 } else {
                     // verification failed
                     console.error("failed")
