@@ -1,30 +1,20 @@
-const bcrypt = require('bcrypt');
 const { validateSignupInput } = require('./Validation.controller');
 const { sendVerificationEmail } = require('./EmailVerification.controller');
 const path = require('path');
 const mysql = require('mysql2/promise');
-const dbHelper = require('../../utilities/data/User')
+const dbHelper = require('../../utilities/data/User');
+const { executeMysqlQuery } = require('../../utilities/mysqlHelper');
 
 require('dotenv').config();
 
-const pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USERNAME,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
-
-async function saveUser(connection, name, email, password, dateOfBirth) {
+async function saveUser(name, email, password, dateOfBirth) {
     try {
-        const [result] = await connection.query(
-            'INSERT INTO users (name, email, password, dateOfBirth) VALUES (?, ?, ?, ?)',
-            [name, email, password, dateOfBirth]
+        const result = await executeMysqlQuery(
+            'INSERT INTO users (name, email, password, dateOfBirth, verified) VALUES (?, ?, ?, ?, ?)',
+            [name, email, password, dateOfBirth, 0]
         );
 
-        return result.insertId; 
+        return result.insertId;
     } catch (error) {
         console.error('Error saving user to database:', error);
         throw error;
@@ -33,7 +23,6 @@ async function saveUser(connection, name, email, password, dateOfBirth) {
 
 
 const handleSignup = async (req, res) => {
-    let connection;
 
     try {
         let { name, email, password, dateOfBirth } = req.body;
@@ -42,9 +31,7 @@ const handleSignup = async (req, res) => {
         password = password.trim();
         dateOfBirth = dateOfBirth.trim();
 
-        connection = await pool.getConnection();
-
-        const userExists = await dbHelper.checkUserExists(connection, email);
+        const userExists = await dbHelper.checkUserExists(email);
         if (userExists) {
             return res.json({
                 status: 'FAILED',
@@ -59,10 +46,9 @@ const handleSignup = async (req, res) => {
             return res.status(400).json(validationError);
         }
 
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        const hashedPassword = await dbHelper.hashString(password);
 
-        userId = await saveUser(connection, name, email, hashedPassword, dateOfBirth);
+        userId = await saveUser(name, email, hashedPassword, dateOfBirth);
 
         const emailResponse = await sendVerificationEmail({ _id: userId, email });
 
@@ -75,10 +61,6 @@ const handleSignup = async (req, res) => {
             message: 'An error occurred during signup.',
             error: err.message,
         });
-    } finally {
-        if (connection) {
-            connection.release();
-        }
     }
 };
 
