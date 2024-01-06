@@ -8,12 +8,13 @@
 <body>
     <%- include('../components/bodyHead') %>
 
-    <script src="../../public/js/login_signup.js"></script>
+    <script src="../../public/js/signin.js"></script>
 
     <div class="form-wrapper">
         <div class="form-container">
+            <h2 id="verification-success" style="display: none">Verification Successful, please log in.</h2>
             <h2>Sign In</h2>
-            <form method="POST" action="/api/user-portal/signin" id="signInForm">
+            <form method="POST" id="signInForm">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
                 <div class="error-message" id="emailError"></div>
