@@ -7,7 +7,7 @@ window.onload = function () {
         const _id = document.getElementById('_id-data').dataset._id
         const token = document.getElementById('token-data').dataset.token
 
-        fetch(`/reset-password/${_id}/${token}`, {
+        fetch(`/account/reset-password/${_id}/${token}`, {
             method: 'POST',
             body: JSON.stringify({
                 password: newpassword,
