@@ -1,43 +1,48 @@
 window.onload = function () {
-    document.getElementById('forgotPasswordForm').addEventListener('submit', function (event) {
-        event.preventDefault();
+    const forgotPasswordForm = document.getElementById('forgotPasswordForm');
 
-        const email = document.getElementById('email').value;
+    if (forgotPasswordForm) {
+        forgotPasswordForm.addEventListener('submit', function (event) {
+            event.preventDefault();
 
-        fetch('/forgot-password', {
-            method: 'POST',
-            body: JSON.stringify({
-                email: email,
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                var submittedContainer = document.querySelector('.submitted-container');
-                var forgotPasswordForm = document.querySelector('.form-container');
+            const email = document.getElementById('email').value;
 
-                if (data.status === 'PENDING') {
-                    if (submittedContainer && forgotPasswordForm) {
-                        submittedContainer.style.display = 'block';
-                        forgotPasswordForm.style.display = 'none';
-                    }
-                } else if (data.status === 'SUCCESS') {
-                    console.log('YAYYYYYY')
-                } else if (data.status === 'FAILED') {
-                    if (submittedContainer && forgotPasswordForm) {
-                        submittedContainer.style.display = 'block';
-                        forgotPasswordForm.style.display = 'none';
-                    }
-                } else {
-                    displayError('other', 'An unexpected error has occurred.')
+            fetch('/account/forgot-password', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: email,
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
                 }
             })
-            .catch((error) => {
-                console.error('Error during password reset:', error);
-            });
-    });
+                .then((response) => response.json())
+                .then((data) => {
+                    var submittedContainer = document.querySelector('.submitted-container');
+                    var forgotPasswordForm = document.querySelector('.form-container');
+
+                    if (data.status === 'PENDING') {
+                        if (submittedContainer && forgotPasswordForm) {
+                            submittedContainer.style.display = 'block';
+                            forgotPasswordForm.style.display = 'none';
+                        }
+                    } else if (data.status === 'SUCCESS') {
+                        console.log('YAYYYYYY')
+                    } else if (data.status === 'FAILED') {
+                        // if (submittedContainer && forgotPasswordForm) {
+                        //     submittedContainer.style.display = 'block';
+                        //     forgotPasswordForm.style.display = 'none';
+                        // }
+                        displayError('other', data.error)
+                    } else {
+                        displayError('other', 'An unexpected error has occurred.')
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error during password reset:', error);
+                });
+        });
+    }
 };
 
 function clearErrorMessages() {
