@@ -61,7 +61,45 @@ const validateResetPasswordInput = (password) => {
     };
 };
 
+const validatePetProfileInput = (petName, petBreed, petAge) => {
+
+    const errors = {};
+
+    // Validate pet name
+    if (!petName || !validator.isLength(petName, { min: 1 })) {
+        errors.petName = "Pet's name is required.";
+    } else if (!validator.isAlpha(petName.replace(/\s+/g, ''))) {
+        errors.petName = "Pet's name can only contain letters and spaces.";
+    }
+
+    // Validate pet breed
+    if (!petBreed || !validator.isLength(petBreed, { min: 1 })) {
+        errors.petBreed = "Pet's breed is required.";
+    } else if (!validator.isAlpha(petBreed.replace(/\s+/g, ''))) {
+        errors.petBreed = "Pet's breed can only contain letters and spaces.";
+    }
+    
+    // Validate pet age
+    if (!petAge || !validator.isInt(petAge, { min: 0 })) {
+        errors.petAge = "Pet's age is required and should be more than 0.";
+    }
+    
+
+    // Check if there are any validation errors
+    if (Object.keys(errors).length === 0) {
+        return null; // No errors, validation successful
+    }
+
+    // Return the validation errors
+    return {
+        status: "FAILED",
+        message: "Validation failed.",
+        errors,
+    };
+};
+
 module.exports = {
     validateSignupInput,
     validateResetPasswordInput,
+    validatePetProfileInput,
 };
