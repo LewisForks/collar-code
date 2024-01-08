@@ -109,6 +109,17 @@ const hashString = async (string) => {
     return hashedString;
 };
 
+const checkPetCount = async (userId) => {
+    try {
+        const petsCount = await executeMysqlQuery('SELECT COUNT(*) AS numberOfPets FROM pets WHERE user_id = ?', [userId]);
+
+        return petsCount.length > 0 ? petsCount[0].numberOfPets : 0;
+    } catch (error) {
+        Logger.error('Error getting user pets count:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     checkUserExists,
     checkVerified,
@@ -120,4 +131,5 @@ module.exports = {
     getResetTokenData,
     changePassword,
     hashString,
+    checkPetCount,
 };
