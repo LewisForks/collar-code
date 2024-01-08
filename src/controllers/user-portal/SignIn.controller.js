@@ -3,7 +3,7 @@ const { sendVerificationEmail } = require('./EmailVerification.controller');
 const mysql = require('mysql2/promise');
 const dbHelper = require('../../utilities/data/User')
 const mysqlHelper = require('../../utilities/mysqlHelper');
-const { decrypt } = require('../../utilities/aes');
+const { decrypt, encrypt } = require('../../utilities/aes');
 
 require('dotenv').config();
 
@@ -47,9 +47,15 @@ const handleSignin = async (req, res) => {
             const hashedPassword = await dbHelper.getHashedPassword(email);
             const decryptedPassword = decrypt(hashedPassword);
 
+            console.log(decryptedPassword);
+
             if (decryptedPassword === password) {
+                const {user_id: userId} = await dbHelper.getUserId(email);
+                console.log(userId);
+                const encryptedUserId = encrypt(userId);
+                console.log(encryptedUserId);
                 req.session.user = {
-                    email: email,
+                    userId: encryptedUserId,
                 };
                 return res.json({
                     status: "SUCCESS",
