@@ -2,6 +2,7 @@ const Router = require('../classes/Router');
 const { sendPasswordResetEmail, resetPassword, checkResetToken } = require('../controllers/user-portal/PasswordReset.controller');
 const { checkVerification } = require('../controllers/user-portal/EmailVerification.controller');
 const { createPetProfile } = require('../controllers/user-portal/PetProfile.controller');
+const { getPetData } = require('../utilities/data/User');
 require('dotenv').config();
 
 class AccountRouter extends Router {
@@ -81,6 +82,26 @@ class AccountRouter extends Router {
 
         this.router.get('/create-pet-profile', (req, res) => res.render('user management/createPetProfile'));
         this.router.post('/create-pet-profile', createPetProfile);
+        this.router.get('/pet/:petId', async (req, res) => {
+            const petId = req.params.petId;
+
+            try {
+                const petData = await getPetData(petId);
+                console.log(petData);
+                
+                if (petData) {
+                    // pet exists
+                    return res.render('user management/petProfile', { petData })
+                } else {
+                    // verification failed
+                    return res.render('user management/petProfile', { status: "FAILED", error: "Pet does not exist." });
+                }
+            } catch (error) {
+                console.error(error);
+                return res.render('errorPage'); // prob best to not just 404 them aye
+            }
+        });
+
         this.router.use((req, res) => {
             res.status(404).render('static/404')
         });
