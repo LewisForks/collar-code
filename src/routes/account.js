@@ -1,5 +1,5 @@
 const Router = require('../classes/Router');
-const { sendPasswordResetEmail, resetPassword } = require('../controllers/user-portal/PasswordReset.controller');
+const { sendPasswordResetEmail, resetPassword, checkResetToken } = require('../controllers/user-portal/PasswordReset.controller');
 const { checkVerification } = require('../controllers/user-portal/EmailVerification.controller');
 require('dotenv').config();
 
@@ -59,7 +59,7 @@ class AccountRouter extends Router {
             const { _id, token } = req.params;
 
             try {
-                const forgotPasswordResult = await forgotPasswordController.checkResetToken({ _id, token });
+                const forgotPasswordResult = await checkResetToken({ _id, token });
 
                 if (forgotPasswordResult.status === "SUCCESS") {
                     // verification success
@@ -67,8 +67,8 @@ class AccountRouter extends Router {
                     return res.render('user management/resetPasswordForm', { _id, token });
                 } else {
                     // verification failed
-                    console.log(forgotPasswordResult.errors);
-                    return res.render('user management/forgotPasswordForm', { error: forgotPasswordResult.error });
+                    console.log('forgot password errors:', forgotPasswordResult.error);
+                    return res.render('user management/forgotPasswordForm', { error: forgotPasswordResult.error, status: forgotPasswordResult.status });
                 }
             } catch (error) {
                 console.error(error);
