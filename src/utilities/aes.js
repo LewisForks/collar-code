@@ -5,10 +5,11 @@ const secretKey = process.env.ENC_KEY || '259df7f7437795bfd3a1361d2567a39c'; // 
 const iv = Buffer.from(process.env.ENC_IV || '9c7de13b11825c9792c9dbc7317c9b41', 'hex'); // crypto.randomBytes(16).toString('hex')
 
 const encrypt = (text) => {
+    const textString = String(text);
     // This line creates a cipher object with the algorithm, secret key, and iv
     const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
     // This line encrypts the text passed in using the cipher object and returns a buffer
-    const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
+    const encrypted = Buffer.concat([cipher.update(textString, 'utf-8'), cipher.final()]);
     // This line returns the buffer as a hex string
     return encrypted.toString('hex');
 };
