@@ -1,6 +1,7 @@
 const Router = require('../classes/Router');
 const { sendPasswordResetEmail, resetPassword, checkResetToken } = require('../controllers/user-portal/PasswordReset.controller');
 const { checkVerification } = require('../controllers/user-portal/EmailVerification.controller');
+const { createPetProfile } = require('../controllers/user-portal/PetProfile.controller');
 require('dotenv').config();
 
 class AccountRouter extends Router {
@@ -79,6 +80,7 @@ class AccountRouter extends Router {
         this.router.post('/reset-password/:_id/:token', resetPassword);
 
         this.router.get('/create-pet-profile', (req, res) => res.render('user management/createPetProfile'));
+        this.router.post('/create-pet-profile', createPetProfile);
         this.router.use((req, res) => {
             res.status(404).render('static/404')
         });
