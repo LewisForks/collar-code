@@ -75,8 +75,10 @@ class AccountRouter extends Router {
                 return res.render('errorPage'); // prob best to not just 404 them aye
             }
         });
+
         this.router.post('/reset-password/:_id/:token', resetPassword);
 
+        this.router.get('/create-pet-profile', (req, res) => res.render('user management/createPetProfile'));
         this.router.use((req, res) => {
             res.status(404).render('static/404')
         });
