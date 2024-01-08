@@ -120,6 +120,17 @@ const checkPetCount = async (userId) => {
     }
 };
 
+const getPetData = async (petId) => {
+    try {
+        const rows = await executeMysqlQuery('SELECT * FROM pets WHERE pet_id = ?', [petId]);
+        return rows.length > 0 ? rows[0] : null;
+    } catch (error) {
+        Logger.error('Error getting pet data:', error);
+        throw error;
+    }
+};
+
+
 module.exports = {
     checkUserExists,
     checkVerified,
@@ -132,4 +143,5 @@ module.exports = {
     changePassword,
     hashString,
     checkPetCount,
+    getPetData,
 };
