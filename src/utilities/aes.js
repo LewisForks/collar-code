@@ -18,9 +18,9 @@ const decrypt = (hash) => {
     // This line creates a decipher object with the algorithm, secret key, and iv
     const decipher = crypto.createDecipheriv(algorithm, secretKey, iv);
     // This line decrypts the hash passed in using the decipher object and returns a buffer
-    const decrpyted = Buffer.concat([decipher.update(Buffer.from(hash, 'hex')), decipher.final()]);
+    const decrypted = Buffer.concat([decipher.update(Buffer.from(hash, 'hex')), decipher.final()]);
     // This line returns the buffer as a string
-    return decrpyted.toString();
+    return decrypted.toString();
 };
 
 module.exports = { encrypt, decrypt };
