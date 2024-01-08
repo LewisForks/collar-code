@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../components/pageHead', { title: 'Sign Up' }) %>
+        <link rel="stylesheet" href="../../public/css/form.css">
+</head>
+
+<body>
+    <%- include('../components/bodyHead') %>
+
+        <!-- <script src="../../public/js/signup.js"></script> -->
+
+        <div class="form-wrapper">
+            <div class="form-container">
+                <h2>PET PROFILE PAGE</h2>
+                <% if (typeof petData === 'object' && petData !== null) { %>
+                    <p>User ID: <%= petData.user_id %></p>
+                    <p>Pet Name: <%= petData.petName %></p>
+                    <p>Pet Breed: <%= petData.petBreed %></p>
+                    <p>Pet Age: <%= petData.petAge %></p>
+                <% } else { %>
+                    <p><%= error %></p>
+                <% } %>
+            </div>
+        </div>
+        
+</body>
+
+</html>
