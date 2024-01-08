@@ -32,6 +32,7 @@ class AccountRouter extends Router {
         this.router.get('/verify', (req, res) => res.render('user management/verifyEmail'));
         this.router.get('/forgot-password', (req, res) => res.render('user management/forgotPasswordForm'));
         this.router.get('/logout', (req, res) => { req.session.destroy(); res.redirect('/account/signin'); });
+        this.router.get('/create-pet-profile', (req, res) => res.render('user management/createPetProfile'));
 
         /**
          * Logic Routes
@@ -80,27 +81,7 @@ class AccountRouter extends Router {
 
         this.router.post('/reset-password/:_id/:token', resetPassword);
 
-        this.router.get('/create-pet-profile', (req, res) => res.render('user management/createPetProfile'));
         this.router.post('/create-pet-profile', createPetProfile);
-        this.router.get('/pet/:petId', async (req, res) => {
-            const petId = req.params.petId;
-
-            try {
-                const petData = await getPetData(petId);
-                console.log(petData);
-                
-                if (petData) {
-                    // pet exists
-                    return res.render('user management/petProfile', { petData })
-                } else {
-                    // verification failed
-                    return res.render('user management/petProfile', { status: "FAILED", error: "Pet does not exist." });
-                }
-            } catch (error) {
-                console.error(error);
-                return res.render('errorPage'); // prob best to not just 404 them aye
-            }
-        });
 
         this.router.use((req, res) => {
             res.status(404).render('static/404')
