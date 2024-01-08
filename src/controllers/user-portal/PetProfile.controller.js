@@ -1,4 +1,4 @@
-const { validateSignupInput } = require('./Validation.controller');
+const { validateSignupInput, validatePetProfileInput } = require('./Validation.controller');
 const { sendVerificationEmail } = require('./EmailVerification.controller');
 const path = require('path');
 const mysql = require('mysql2/promise');
