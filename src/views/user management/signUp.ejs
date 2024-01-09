@@ -1,41 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include('../components/pageHead', { title: 'Sign Up' }) %>
-    <link rel="stylesheet" href="../../public/css/form.css">
+        <link rel="stylesheet" href="../../public/css/form.css">
 </head>
 
 <body>
-    <%- include('../components/bodyHead') %>
+    <div class="wrapper">
+        <%- include('../components/bodyHead') %>
 
-    <script src="../../public/js/signup.js"></script>
+            <div class="form-wrapper">
+                <div class="form-container">
+                    <h2>Sign Up</h2>
+                    <form method="POST" id="signUpForm">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                        <div class="error-message" id="nameError"></div>
 
-    <div class="form-wrapper">
-        <div class="form-container">
-            <h2>Sign Up</h2>
-            <form method="POST" id="signUpForm">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                <div class="error-message" id="nameError"></div>
-    
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <div class="error-message" id="emailError"></div>
-    
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <div class="error-message" id="passwordError"></div>
-    
-                <label for="dob">Date of Birth:</label>
-                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
-                <div class="error-message" id="dateOfBirthError"></div>
-    
-                <input type="submit" value="Sign Up">
-            </form>
-            <br>
-            <a href="/account/signin">Already have an account?</a>
-        </div>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <div class="error-message" id="emailError"></div>
+
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                        <div class="error-message" id="passwordError"></div>
+
+                        <label for="dateOfBirth">Date of Birth:</label>
+                        <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                        <div class="error-message" id="dateOfBirthError"></div>
+
+                        <input type="submit" id="submitBtn" value="Sign Up">
+                    </form>
+                    <br>
+                    <a href="/account/signin">Already have an account?</a>
+                </div>
+            </div>
     </div>
+
 </body>
+
+<script src="../../public/js/forms/signup.js"></script>
+<script src="../../public/js/forms/formValidation/signUpValidation.js"></script>
 
 </html>
