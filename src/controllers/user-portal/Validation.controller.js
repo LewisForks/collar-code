@@ -17,9 +17,9 @@ const validateSignupInput = (name, email, password, dateOfBirth) => {
     }
 
     // Validate password
-    if (!password || !validator.isLength(password, { min: 8 })) {
-        errors.password = "Password must be at least 8 characters.";
-    }
+    if (!password || !validator.isLength(password, { min: 8, max: 32 })) {
+        errors.password = "Password must be between 8 and 32 characters.";
+    }    
 
     // Validate date of birth
     if (!dateOfBirth || !validator.isDate(dateOfBirth, { format: 'YYYY-MM-DD', strictMode: false })) {
