@@ -61,6 +61,10 @@ h2 {
     min-height: 23px;
 }
 
+#otherError {
+    min-height: 0;
+}
+
 .form-container h1 {
     font-size: 4rem;
 }
