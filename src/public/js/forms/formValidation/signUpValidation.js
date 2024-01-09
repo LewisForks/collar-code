@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var nameValid = false;
   var emailValid = false;
+  var passwordValid = false;
 
   function nameValidation() {
     let input = document.getElementById("name");
@@ -50,4 +51,23 @@ document.addEventListener('DOMContentLoaded', function () {
       return (emailValid = true);
     }
   }
+
+  function passwordValidation() {
+    let input = document.getElementById("password");
+    let passwordError = document.getElementById('passwordError');
+    let password = input.value;
+
+    if (!password || password.length < 8) {
+      input.classList.remove("valid");
+      input.classList.add("invalid");
+      passwordError.textContent = "Password must be at least 8 characters.";
+      return (passwordValid = false);
+    } else {
+      input.classList.remove("invalid");
+      input.classList.add("valid");
+      passwordError.textContent = "";
+      return (passwordValid = true);
+    }
+  }
+
 });
