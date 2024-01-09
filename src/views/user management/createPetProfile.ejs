@@ -8,7 +8,7 @@
 <body>
     <%- include('../components/bodyHead') %>
 
-    <script src="../../public/js/createPetProfile.js"></script>
+    <script src="../../public/js/forms/createPetProfile.js"></script>
 
     <div class="form-wrapper">
         <div class="form-container">
@@ -25,6 +25,9 @@
                 <label for="petAge">Age:</label>
                 <input type="number" id="petAge" name="petAge" required>
                 <div class="error-message" id="petAgeError"></div>
+
+                <p>By default, we will use your accounts contact information. You can change this in your pets settings!</p>
+
                 <div class="error-message" id="otherError"></div>
                 <input type="submit" value="Register Pet">
             </form>
