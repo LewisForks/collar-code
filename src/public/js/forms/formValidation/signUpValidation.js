@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   var nameValid = false;
+  var emailValid = false;
 
   function nameValidation() {
     let input = document.getElementById("name");
@@ -26,4 +27,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  function emailValidation() {
+    let input = document.getElementById("email");
+    let emailError = document.getElementById('emailError');
+    let email = input.value.trim();
+    var pattern = /^[^ ]+@[^ ]+\.[a-z]{2,7}$/;
+
+    if (!email) {
+      input.classList.remove("valid");
+      input.classList.add("invalid");
+      emailError.textContent = "Email is required.";
+      return (emailValid = false);
+    } else if (!pattern.test(email)) {
+      input.classList.remove("valid");
+      input.classList.add("invalid");
+      emailError.textContent = "Invalid email format.";
+      return (emailValid = false);
+    } else {
+      input.classList.remove("invalid");
+      input.classList.add("valid");
+      emailError.textContent = "";
+      return (emailValid = true);
+    }
+  }
 });
