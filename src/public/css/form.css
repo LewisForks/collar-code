@@ -12,10 +12,10 @@
     text-align: center;
 }
 
-.form-container h2 {
+h2 {
     margin: 0 0 20px;
     color: #fff;
-    font-size: 2.5rem;
+    font-size: 3rem;
     text-align: center;
 }
 
@@ -24,6 +24,7 @@
     margin: 10px 0;
     color: #fff;
     font-size: 1.5rem;
+    font-weight: 500;
 }
 
 .form-container input[type="email"],
@@ -32,7 +33,7 @@
 .form-container input[type="date"] {
     width: 80%;
     padding: 5px;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     border: 1px solid #35383e;
     background-color: #202225;
     border-radius: 5px;
@@ -56,13 +57,14 @@
 .error-message {
     font-size: 1.5rem;
     color: rgb(252, 69, 69);
+    margin-top: 3px;
+    min-height: 23px;
 }
 
 .form-container h1 {
     font-size: 4rem;
 }
 
-.form-container h2,
 .form-container p,
 .form-container a {
     font-size: 2rem;
@@ -77,7 +79,6 @@
     font-size: 4rem;
 }
 
-.submitted-container h2,
 .submitted-container p,
 .submitted-container a {
     font-size: 2rem;
@@ -94,6 +95,7 @@
 input.invalid {
     border-color: red !important;
 }
+
 input.valid {
     border-color: greenyellow !important;
 }
