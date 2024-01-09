@@ -6,6 +6,7 @@
     box-sizing: border-box;
     outline: none;
     scroll-behavior: smooth;
+    list-style: none;
     text-decoration: none;
     border: none;
     font-family: 'Poppins', sans-serif;
@@ -13,8 +14,8 @@
 }
 
 :root {
-    --primary-bg-colour: #110c29;
-    --secondary-bg-colour: #0a0720;
+    --primary-bg-colour: #202225;
+    --secondary-bg-colour: #131517;
     --text-colour: #ededed;
     --other-colour: #c42cc4;
 }
