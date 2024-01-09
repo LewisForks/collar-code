@@ -1,4 +1,5 @@
 window.onload = function () {
+
     document.getElementById('registerPetForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
