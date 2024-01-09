@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var nameValid = false;
   var emailValid = false;
   var passwordValid = false;
+  var dobValid = false;
 
   function nameValidation() {
     let input = document.getElementById("name");
@@ -70,4 +71,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  function dobValidation() {
+    let input = document.getElementById("dateOfBirth");
+    let dobError = document.getElementById('dateOfBirthError');
+    let dob = input.value;
+
+    if (!dob) {
+        input.classList.remove("valid");
+        input.classList.add("invalid");
+        dobError.textContent = "Date of Birth is required.";
+        return (dobValid = false);
+    } else {
+        input.classList.remove("invalid");
+        input.classList.add("valid");
+        dobError.textContent = "";
+        return (dobValid = true);
+    }
+}
 });
