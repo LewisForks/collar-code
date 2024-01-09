@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var emailValid = false;
   var passwordValid = false;
   var dobValid = false;
+  var formValid = false;
 
   function nameValidation() {
     let input = document.getElementById("name");
@@ -88,4 +89,56 @@ document.addEventListener('DOMContentLoaded', function () {
         return (dobValid = true);
     }
 }
+
+function formValidation() {
+  const submitBtn = document.getElementById("submitBtn");
+
+  if (nameValid && emailValid && passwordValid && dobValid) {
+      submitBtn.style.background = "#6f55f2";
+      submitBtn.style.cursor = "pointer";
+      submitBtn.disabled = false;
+      return (formValid = true);
+  } else {
+      submitBtn.style.background = "#6f55f23b";
+      submitBtn.style.cursor = "not-allowed";
+      submitBtn.disabled = true;
+      return (formValid = false);
+  }
+}
+
+
+  formValidation();
+
+  function nameFormValid() {
+    nameValidation();
+    formValidation();
+  }
+
+  function emailFormValid() {
+    emailValidation();
+    formValidation();
+  }
+
+  function passwordFormValid() {
+    passwordValidation();
+    formValidation();
+  }
+
+  function dobFormValid() {
+    dobValidation();
+    formValidation();
+  }
+
+  // checks for keyup
+document.getElementById('name').addEventListener('keyup', nameFormValid);
+document.getElementById('email').addEventListener('keyup', emailFormValid);
+document.getElementById('password').addEventListener('keyup', passwordFormValid);
+document.getElementById('dateOfBirth').addEventListener('keyup', dobFormValid);
+
+// checks for input - incase they paste it or something
+document.getElementById('name').addEventListener('input', nameFormValid);
+document.getElementById('email').addEventListener('input', emailFormValid);
+document.getElementById('password').addEventListener('input', passwordFormValid);
+document.getElementById('dateOfBirth').addEventListener('input', dobFormValid);
+
 });
