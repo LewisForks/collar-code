@@ -89,3 +89,10 @@
 #verification-success {
     color: limegreen;
 }
+
+input.invalid {
+    border-color: red !important;
+}
+input.valid {
+    border-color: greenyellow !important;
+}
