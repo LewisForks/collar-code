@@ -1,4 +1,4 @@
-window.onload = function () {
+document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('signUpForm').addEventListener('submit', function (event) {
         event.preventDefault();
 
@@ -65,4 +65,4 @@ window.onload = function () {
             }
         }
     }
-}
+});
