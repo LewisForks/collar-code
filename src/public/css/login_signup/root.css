@@ -1,3 +1,25 @@
+.sidebaroptions {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.sidebaroptions .sidebartext {
+    margin: 0 auto;
+    text-align: left;
+}
+
+.sidebaroptions .sidebartext p:first-child {
+    margin-top: 250px;
+}
+
+.sidebaroptions .sidebartext p {
+    margin: 30px 0;
+    color: #99aab5;
+}
+
 .signin-wrapper {
     display: flex;
     justify-content: center;
