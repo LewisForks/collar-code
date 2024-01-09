@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include('../components/pageHead', { title: 'Sign In' }) %>
-    <link rel="stylesheet" href="../../public/css/form.css">
+        <link rel="stylesheet" href="../../public/css/form.css">
 </head>
 
 <body>
     <%- include('../components/bodyHead') %>
 
-    <script src="../../public/js/forms/signin.js"></script>
+        <script src="../../public/js/forms/signin.js"></script>
+        <script src="../../public/js/forms/formValidation/signInValidation.js"></script>
 
-    <div class="form-wrapper">
-        <div class="form-container">
-            <h2 id="verification-success" style="display: none">Verification Successful, please log in.</h2>
-            <h2>Sign In</h2>
-            <form method="POST" id="signInForm">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <div class="error-message" id="emailError"></div>
-    
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <div class="error-message" id="passwordError"></div>
-                <div class="error-message" id="otherError"></div>
-                <input type="submit" value="Sign In">
-            </form>
-            <br>
-            <a href="/account/forgot-password">Forgot Password?</a>
+        <div class="form-wrapper">
+            <div class="form-container">
+                <h2 id="verification-success" style="display: none">Verification Successful, please log in.</h2>
+                <h2>Sign In</h2>
+                <form method="POST" id="signInForm">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter Email" required>
+                    <div class="error-message" id="emailError"></div>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter Password" required>
+                    <div class="error-message" id="passwordError"></div>
+                    <div class="error-message" id="otherError"></div>
+                    <input type="submit" id="submitBtn" value="Sign In">
+                </form>
+                <br>
+                <a href="/account/forgot-password">Forgot Password?</a>
+            </div>
         </div>
-    </div>
 </body>
+
 </html>
