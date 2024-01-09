@@ -25,7 +25,6 @@ window.onload = function () {
                     window.location.href = `/pet/${petId}`;
                 } else if (data.status === 'FAILED') {
                     clearErrorMessages();
-
                     // display any errors
                     if (data.error) {
                         displayError('petName', data.error.petName);
@@ -34,6 +33,8 @@ window.onload = function () {
                         displayError('other', data.error.other);
                         return;
                     }
+                } else if (data.status === 'SESSIONEXPIRED') {
+                    window.location.href='/account/signin?sessionexpired'
                 } else {
                     displayError('other', "An unexpected error has occured. I actually don't know how you got here tbh")
                 }
