@@ -7,11 +7,8 @@
 }
 
 .form-container {
-    background: #0a0720;
     padding: 2rem;
     width: 50rem;
-    border-radius: 5%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
 
@@ -36,9 +33,10 @@
     width: 80%;
     padding: 5px;
     margin-bottom: 20px;
-    border: 1px solid #7a7a7a;
-    background-color: #ccc;
+    border: 1px solid #35383e;
+    background-color: #202225;
     border-radius: 5px;
+    color: rgb(232, 230, 227);
 }
 
 .form-container input[type="submit"] {
@@ -58,14 +56,15 @@
 .error-message {
     font-size: 1.5rem;
     color: rgb(252, 69, 69);
-    margin-top: 1rem;
 }
 
 .form-container h1 {
     font-size: 4rem;
 }
 
-.form-container h2,p,a {
+.form-container h2,
+.form-container p,
+.form-container a {
     font-size: 2rem;
 }
 
@@ -74,15 +73,17 @@
     font-size: 1.5rem;
 }
 
-.submitted-container  h1 {
+.submitted-container h1 {
     font-size: 4rem;
 }
 
-.submitted-container  h2,p,a {
+.submitted-container h2,
+.submitted-container p,
+.submitted-container a {
     font-size: 2rem;
 }
 
-.submitted-container  a {
+.submitted-container a {
     color: lightskyblue;
 }
 
