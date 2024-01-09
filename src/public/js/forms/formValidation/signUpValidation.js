@@ -64,6 +64,11 @@ document.addEventListener('DOMContentLoaded', function () {
       input.classList.add("invalid");
       passwordError.textContent = "Password must be at least 8 characters.";
       return (passwordValid = false);
+    } else if (password.length > 32) {
+      input.classList.remove("valid");
+      input.classList.add("invalid");
+      passwordError.textContent = "Password cannot be more than 32 characters.";
+      return (passwordValid = false);
     } else {
       input.classList.remove("invalid");
       input.classList.add("valid");
@@ -78,33 +83,33 @@ document.addEventListener('DOMContentLoaded', function () {
     let dob = input.value;
 
     if (!dob) {
-        input.classList.remove("valid");
-        input.classList.add("invalid");
-        dobError.textContent = "Date of Birth is required.";
-        return (dobValid = false);
+      input.classList.remove("valid");
+      input.classList.add("invalid");
+      dobError.textContent = "Date of Birth is required.";
+      return (dobValid = false);
     } else {
-        input.classList.remove("invalid");
-        input.classList.add("valid");
-        dobError.textContent = "";
-        return (dobValid = true);
+      input.classList.remove("invalid");
+      input.classList.add("valid");
+      dobError.textContent = "";
+      return (dobValid = true);
     }
-}
+  }
 
-function formValidation() {
-  const submitBtn = document.getElementById("submitBtn");
+  function formValidation() {
+    const submitBtn = document.getElementById("submitBtn");
 
-  if (nameValid && emailValid && passwordValid && dobValid) {
+    if (nameValid && emailValid && passwordValid && dobValid) {
       submitBtn.style.background = "#6f55f2";
       submitBtn.style.cursor = "pointer";
       submitBtn.disabled = false;
       return (formValid = true);
-  } else {
+    } else {
       submitBtn.style.background = "#6f55f23b";
       submitBtn.style.cursor = "not-allowed";
       submitBtn.disabled = true;
       return (formValid = false);
+    }
   }
-}
 
 
   formValidation();
@@ -130,15 +135,15 @@ function formValidation() {
   }
 
   // checks for keyup
-document.getElementById('name').addEventListener('keyup', nameFormValid);
-document.getElementById('email').addEventListener('keyup', emailFormValid);
-document.getElementById('password').addEventListener('keyup', passwordFormValid);
-document.getElementById('dateOfBirth').addEventListener('keyup', dobFormValid);
+  document.getElementById('name').addEventListener('keyup', nameFormValid);
+  document.getElementById('email').addEventListener('keyup', emailFormValid);
+  document.getElementById('password').addEventListener('keyup', passwordFormValid);
+  document.getElementById('dateOfBirth').addEventListener('keyup', dobFormValid);
 
-// checks for input - incase they paste it or something
-document.getElementById('name').addEventListener('input', nameFormValid);
-document.getElementById('email').addEventListener('input', emailFormValid);
-document.getElementById('password').addEventListener('input', passwordFormValid);
-document.getElementById('dateOfBirth').addEventListener('input', dobFormValid);
+  // checks for input - incase they paste it or something
+  document.getElementById('name').addEventListener('input', nameFormValid);
+  document.getElementById('email').addEventListener('input', emailFormValid);
+  document.getElementById('password').addEventListener('input', passwordFormValid);
+  document.getElementById('dateOfBirth').addEventListener('input', dobFormValid);
 
 });
