@@ -32,7 +32,13 @@ class AccountRouter extends Router {
         this.router.get('/verify', (req, res) => res.render('user management/verifyEmail'));
         this.router.get('/forgot-password', (req, res) => res.render('user management/forgotPasswordForm'));
         this.router.get('/logout', (req, res) => { req.session.destroy(); res.redirect('/account/signin'); });
-        this.router.get('/create-pet-profile', (req, res) => res.render('user management/createPetProfile'));
+        this.router.get('/create-pet-profile', (req, res) => {
+            if (req.session && req.session.user) {
+                res.render('user management/createPetProfile')
+            } else {
+                res.redirect('/account/signin?sessionexpired');
+            }
+        });
 
         /**
          * Logic Routes
@@ -81,7 +87,16 @@ class AccountRouter extends Router {
 
         this.router.post('/reset-password/:_id/:token', resetPassword);
 
-        this.router.post('/create-pet-profile', createPetProfile);
+        this.router.post('/create-pet-profile', (req, res) => {
+            if (req.session && req.session.user) {
+                createPetProfile(req, res);
+            } else {
+                res.json({
+                    status: "SESSIONEXPIRED"
+                })
+                console.log('EXPIRED')
+            }
+        });        
 
         this.router.use((req, res) => {
             res.status(404).render('static/404')
