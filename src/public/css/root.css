@@ -409,17 +409,17 @@ body {
         flex-direction: column;
         position: fixed;
         top: 83.6px;
-        right: -100%; /* Start off-screen */
-        background-color: #131517; /* Adjust background color as needed */
+        right: -100%;
+        background-color: #131517;
         width: 35%;
         padding: 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: right 0.3s ease; /* Transition effect for smooth slide-in */
+        transition: right 0.3s ease;
         z-index: 101;
     }
 
     .mobile-navbar.show {
-        right: 0; /* Slide in when the 'show' class is added */
+        right: 0;
     }
 
     .mobile-navbar a {
