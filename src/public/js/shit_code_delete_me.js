@@ -1,4 +1,5 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () { 
+
     const typewriter = document.querySelector(".typewriter");
     const text1 = "Something else here";
     const text2 = "Effortless Registration";
@@ -45,24 +46,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // scroll sections
 
-let sections = document.querySelectorAll('section');
-let navLinks = document.querySelectorAll('header nav a');
+// let sections = document.querySelectorAll('section');
+// let navLinks = document.querySelectorAll('header nav a');
 
-window.onscroll = () => {
-    sections.forEach(sec => {
-        let top = window.scrollY;
-        let offset = sec.offsetTop - 100;
-        let height = sec.offsetHeight;
-        let id = sec.getAttribute('id');
+// window.onscroll = () => {
+//     sections.forEach(sec => {
+//         let top = window.scrollY;
+//         let offset = sec.offsetTop - 100;
+//         let height = sec.offsetHeight;
+//         let id = sec.getAttribute('id');
 
-        if (top >= offset && top < offset + height) {
-            navLinks.forEach(link => {
-                link.classList.remove('selected');
-                document.querySelector('header nav a[href*=' + id + ']').classList.add('selected');
-            });
-        }
-    });
-};
+//         if (top >= offset && top < offset + height) {
+//             navLinks.forEach(link => {
+//                 link.classList.remove('selected');
+//                 document.querySelector('header nav a[href*=' + id + ']').classList.add('selected');
+//             });
+//         }
+//     });
+// };
 
 // contact form functionality (opens mail app)
 /**
