@@ -61,6 +61,10 @@ body {
         color: var(--text-colour);
     }
 
+    .mobile-navbar {
+        display: none;
+    }
+
     .navbar a {
         font-size: 1.5rem;
         font-weight: 400;
@@ -400,21 +404,41 @@ body {
         display: none;
     }
 
-    .navbar a {
+    .mobile-navbar {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 83.6px;
+        right: -100%; /* Start off-screen */
+        background-color: #131517; /* Adjust background color as needed */
+        width: 35%;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease; /* Transition effect for smooth slide-in */
+        z-index: 101;
+    }
+
+    .mobile-navbar.show {
+        right: 0; /* Slide in when the 'show' class is added */
+    }
+
+    .mobile-navbar a {
+        display: block;
         font-size: 1.5rem;
         font-weight: 400;
         color: var(--text-colour);
-        margin-left: 3rem;
         transition: .5s;
+        text-align: center;
+        margin-bottom: 1rem;
     }
 
-    .navbar a:hover,
-    .navbar a.selected {
+    .mobile-navbar a:hover,
+    .mobile-navbar a.selected {
         color: var(--other-colour);
     }
 
     #menu-icon {
-        display: none;
+        display: block;
         color: var(--text-colour);
         font-size: 3.5rem;
         cursor: pointer;
@@ -462,6 +486,35 @@ body {
         font-size: 1.5rem;
         margin: 2rem 0 4rem;
         text-align: center;
+    }
+
+    .mobile-btn-box {
+        position: relative;
+        justify-content: space-around;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .mobile-btn-box .btn {
+        position: relative;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        color: var(--primary-bg-colour);
+        width: 80%;
+        height: 70%;
+        background: var(--other-colour);
+        border: .2rem solid var(--other-colour);
+        border-radius: .8rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        z-index: 1;
+        overflow: hidden;
+        transition: .5s;
     }
 
     .btn-box {
@@ -521,6 +574,10 @@ body {
 
     .btn-box .btn:hover::before {
         width: 100%;
+    }
+
+    .typewriter {
+        font-size: 2.5rem;
     }
 
     .typewriter::after {
