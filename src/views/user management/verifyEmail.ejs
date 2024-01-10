@@ -4,7 +4,6 @@
 <head>
     <%- include('../components/pageHead', { title: 'E-Mail Verification' }) %>
         <link rel="stylesheet" href="/public/css/form.css">
-        <script src="../../public/js/root.js"></script>
 </head>
 
 <body>
@@ -15,12 +14,12 @@
                 <h1>Verify Your Email</h1>
 
                 <% if (typeof error !=='undefined' && error !==null) { %>
-                    <h2>Verification Unsuccessful - please check the error below and try again.</h2>
+                    <h3>Verification Unsuccessful - please check the error below and try again.</h2>
                     <p style="color: red;">
                         <%= error %>
                     </p>
                     <% } else { %>
-                        <h2>Nearly there - check your inbox and verify your account!</h2>
+                        <h3>Nearly there - check your inbox and verify your account!</h2>
                         <p>Tip: If you don't see the email, check your spam folder.</p>
                         <br>
                         <p>Done? Go ahead and <a href="/dashboard">login to your account</a>.</h3>
