@@ -4,24 +4,31 @@ const mysql = require('mysql2/promise')
 const dbHelper = require('../../utilities/data/User');
 const { executeMysqlQuery } = require('../../utilities/mysqlHelper');
 const { decrypt } = require('../../utilities/aes');
+const { MailerSend, EmailParams, Sender, Recipient } = require('mailersend');
 
 require('dotenv').config();
 
-let transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.AUTH_EMAIL,
-        pass: process.env.AUTH_PASS,
-    }
+const mailerSend = new MailerSend({
+    apiKey: process.env.MAILERSEND_API_KEY,
 });
 
-transporter.verify((error, success) => {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log('Ready for emails');
-    }
-});
+const sentFrom = new Sender(process.env.MAILERSEND_EMAIL, process.env.MAILERSEND_NAME)
+
+// let transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//         user: process.env.AUTH_EMAIL,
+//         pass: process.env.AUTH_PASS,
+//     }
+// });
+
+// transporter.verify((error, success) => {
+//     if (error) {
+//         console.log(error);
+//     } else {
+//         console.log('Ready for emails');
+//     }
+// });
 
 const saveVerificationData = async (userId, hashedUniqueString, expirationTime) => {
     await executeMysqlQuery(
@@ -30,7 +37,7 @@ const saveVerificationData = async (userId, hashedUniqueString, expirationTime) 
     );
 };
 
-const sendVerificationEmail = async ({ _id, email }) => {
+const sendVerificationEmail = async ({ _id, email, userName }) => {
 
     try {
 
@@ -39,18 +46,24 @@ const sendVerificationEmail = async ({ _id, email }) => {
 
         const uniqueString = uuidv4() + _id;
 
-        const mailOptions = {
-            from: process.env.AUTH_EMAIL,
-            to: email,
-            subject: "Verify Your Email",
-            html: `<p>Verify your email address to complete the signup and login to your new account.</p><p>This link <b>expires in 6 hours</b>.</p><p>Click <a href="${currentUrl}account/verify/${_id}/${uniqueString}">here</a> to proceed.</p>`,
-        };
+        const recipient = [
+            new Recipient(email, userName)
+          ];
+
+        const emailParams = new EmailParams()
+            .setFrom(sentFrom)
+            .setTo(recipient)
+            .setReplyTo(sentFrom)
+            .setSubject("CollarCode | Verify Your Email Address")
+            .setHtml(`<p>Verify your email address to complete the signup and login to your new account.</p><p>This link <b>expires in 6 hours</b>.</p><p>Click <a href="${currentUrl}account/verify/${_id}/${uniqueString}">here</a> to proceed.</p>`)
 
         const hashedUniqueString = await dbHelper.hashString(uniqueString);
 
         await saveVerificationData(_id, hashedUniqueString, expirationTime);
 
-        await transporter.sendMail(mailOptions);
+        await mailerSend.email.send(emailParams);
+
+        // await transporter.sendMail(mailOptions);
 
         const response = {
             status: "PENDING",
@@ -89,7 +102,7 @@ const checkVerification = async ({ userId, uniqueString }) => {
             if (expires_at < Date.now()) {
                 await executeMysqlQuery('DELETE FROM user_verification WHERE user_id = ?', [userId]);
                 await executeMysqlQuery('DELETE FROM users WHERE user_id = ?', [userId]);
-                
+
                 return {
                     status: "FAILED",
                     message: "Link has expired. Please sign up again."

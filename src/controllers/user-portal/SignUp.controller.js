@@ -50,7 +50,7 @@ const handleSignup = async (req, res) => {
 
         userId = await saveUser(name, email, hashedPassword, dateOfBirth);
 
-        const emailResponse = await sendVerificationEmail({ _id: userId, email });
+        const emailResponse = await sendVerificationEmail({ _id: userId, email, userName: name });
 
 
         res.json(emailResponse);

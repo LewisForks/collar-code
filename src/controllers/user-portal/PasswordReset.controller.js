@@ -5,24 +5,31 @@ const dbHelper = require('../../utilities/data/User')
 const { validateResetPasswordInput } = require('./Validation.controller');
 const { decrypt } = require('../../utilities/aes');
 const { executeMysqlQuery } = require('../../utilities/mysqlHelper');
+const { MailerSend, EmailParams, Sender, Recipient } = require('mailersend');
 
 require('dotenv').config();
 
-let transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.AUTH_EMAIL,
-        pass: process.env.AUTH_PASS,
-    }
+const mailerSend = new MailerSend({
+    apiKey: process.env.MAILERSEND_API_KEY,
 });
 
-transporter.verify((error, success) => {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log('Ready for emails');
-    }
-});
+const sentFrom = new Sender(process.env.MAILERSEND_EMAIL, process.env.MAILERSEND_NAME)
+
+// let transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//         user: process.env.AUTH_EMAIL,
+//         pass: process.env.AUTH_PASS,
+//     }
+// });
+
+// transporter.verify((error, success) => {
+//     if (error) {
+//         console.log(error);
+//     } else {
+//         console.log('Ready for emails');
+//     }
+// });
 
 const saveResetTokenData = async (userId, hashedToken, expirationTime) => {
     await executeMysqlQuery(
@@ -48,18 +55,18 @@ const sendPasswordResetEmail = async (req, res) => {
                 console.log('more than 60 seconds');
                 const deleteResult = await executeMysqlQuery('DELETE FROM password_reset WHERE user_id = ?', [_id]);
 
-                    if (deleteResult && deleteResult[0] && deleteResult[0].affectedRows !== undefined) {
-                        console.log(`Deleted ${deleteResult[0].affectedRows} row(s)`);
-                    } else {
-                        console.error('Error deleting old password reset token:', deleteResult);
-                    }
+                if (deleteResult && deleteResult[0] && deleteResult[0].affectedRows !== undefined) {
+                    console.log(`Deleted ${deleteResult[0].affectedRows} row(s)`);
+                } else {
+                    console.error('Error deleting old password reset token:', deleteResult);
+                }
             } else {
                 console.log('not been more than 60 seconds');
 
                 return res.status(400).json({
                     status: "FAILED",
                     error: "Please wait 60 seconds before resending the password reset email."
-                });                
+                });
             }
         }
 
@@ -68,18 +75,24 @@ const sendPasswordResetEmail = async (req, res) => {
 
         const token = uuidv4() + _id;
 
-        const mailOptions = {
-            from: process.env.AUTH_EMAIL,
-            to: email,
-            subject: "Reset Your Password",
-            html: `<p>Click <a href="${currentUrl}account/forgot-password/${_id}/${token}">here</a> to reset your password. This link <b>expires in 6 hours</b>.</p>`,
-        };
+        const recipient = [
+            new Recipient(email, userName)
+        ];
+
+        const emailParams = new EmailParams()
+            .setFrom(sentFrom)
+            .setTo(recipient)
+            .setReplyTo(sentFrom)
+            .setSubject("CollarCode | Reset Your Password")
+            .setHtml(`<p>Click <a href="${currentUrl}account/forgot-password/${_id}/${token}">here</a> to reset your password. This link <b>expires in 6 hours</b>.</p>`)
 
         const hashedToken = await dbHelper.hashString(token);
 
         await saveResetTokenData(_id, hashedToken, expirationTime);
 
-        await transporter.sendMail(mailOptions);
+        await mailerSend.email.send(emailParams);
+
+        // await transporter.sendMail(mailOptions);
 
         // generic success, dont tell user if it worked or not
         return res.status(200).json({
