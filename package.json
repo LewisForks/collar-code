@@ -1,7 +1,7 @@
 {
     "name": "collar-code",
     "version": "0.0.1",
-    "description": "Fullstack webapp powering collarcode.net",
+    "description": "Fullstack webapp powering collarcode.co.uk",
     "main": "index.js",
     "scripts": {
         "build:docs": "jsdoc src -r -d ./src/docs",
