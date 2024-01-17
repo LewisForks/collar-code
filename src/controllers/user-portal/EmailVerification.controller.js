@@ -14,22 +14,6 @@ const mailerSend = new MailerSend({
 
 const sentFrom = new Sender(process.env.MAILERSEND_EMAIL, process.env.MAILERSEND_NAME)
 
-// let transporter = nodemailer.createTransport({
-//     service: "gmail",
-//     auth: {
-//         user: process.env.AUTH_EMAIL,
-//         pass: process.env.AUTH_PASS,
-//     }
-// });
-
-// transporter.verify((error, success) => {
-//     if (error) {
-//         console.log(error);
-//     } else {
-//         console.log('Ready for emails');
-//     }
-// });
-
 const saveVerificationData = async (userId, hashedUniqueString, expirationTime) => {
     await executeMysqlQuery(
         'INSERT INTO user_verification (user_id, unique_string, created_at, expires_at) VALUES (?, ?, ?, ?)',
@@ -55,7 +39,7 @@ const sendVerificationEmail = async ({ _id, email, userName }) => {
             .setTo(recipient)
             .setReplyTo(sentFrom)
             .setSubject("CollarCode | Verify Your Email Address")
-            .setHtml(`<p>Verify your email address to complete the signup and login to your new account.</p><p>This link <b>expires in 6 hours</b>.</p><p>Click <a href="${currentUrl}account/verify/${_id}/${uniqueString}">here</a> to proceed.</p>`)
+            .setHtml(`<p>Verify your email address to complete the signup and login to your new account.</p><p>This link <b>expires in 6 hours</b>.</p><p>Click <a href="${currentUrl}/account/verify/${_id}/${uniqueString}">here</a> to proceed.</p>`)
 
         const hashedUniqueString = await dbHelper.hashString(uniqueString);
 
