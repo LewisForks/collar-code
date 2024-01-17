@@ -31,9 +31,9 @@ const checkVerified = async (email) => {
     }
 };
 
-const getUserData = async (email) => {
+const getUserData = async (userId) => {
     try {
-        const rows = await executeMysqlQuery('SELECT * FROM users WHERE email = ?', [email]);
+        const rows = await executeMysqlQuery('SELECT * FROM users WHERE user_id = ?', [userId]);
         return rows.length > 0 ? rows[0] : null;
     } catch (error) {
         Logger.error('Error getting user data:', error);
@@ -74,9 +74,9 @@ const getUserName = async (userId) => {
     }
 }
 
-const getHashedPassword = async (email) => {
+const getHashedPassword = async (userId) => {
     try {
-        const userData = await getUserData(email);
+        const userData = await getUserData(userId);
         return userData ? userData.password : null;
     } catch (error) {
         Logger.error('Error getting hashed password:', error);
