@@ -43,8 +43,9 @@ const handleSignin = async (req, res) => {
                     }
                 });
             }
+            const userId = await dbHelper.getUserId(email);
 
-            const hashedPassword = await dbHelper.getHashedPassword(email);
+            const hashedPassword = await dbHelper.getHashedPassword(userId);
             const decryptedPassword = decrypt(hashedPassword);
 
             console.log(decryptedPassword);
