@@ -63,6 +63,17 @@ const getUserEmail = async (userId) => {
     }
 }
 
+const getUserName = async (userId) => {
+    try {
+        const rows = await executeMysqlQuery('SELECT name from users where user_id = ?', [userId])
+
+        return rows.length > 0 ? rows[0] : 0;
+    } catch (error) {
+        Logger.error('Error getting user id:', error);
+        throw error;
+    }
+}
+
 const getHashedPassword = async (email) => {
     try {
         const userData = await getUserData(email);
@@ -137,6 +148,7 @@ module.exports = {
     getUserData,
     getUserId,
     getUserEmail,
+    getUserName,
     getHashedPassword,
     getVerificationData,
     getResetTokenData,
