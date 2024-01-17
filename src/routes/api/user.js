@@ -6,6 +6,7 @@ const { handleSignin, renderSignin } = require('../../controllers/user-portal/Si
 
 const { convertError } = require('../../utilities/middleware/convertError');
 const { crossOriginHostOnly } = require('../../utilities/middleware/crossOriginHostOnly');
+const { updateAccountDetails } = require('../../controllers/dashboard/Dashboard.controller');
 
 class API_User extends Router {
     constructor(client) {
@@ -18,6 +19,7 @@ class API_User extends Router {
 
         this.router.post('/signup', handleSignup);
         this.router.post('/signin', handleSignin);
+        this.router.post('/update-details', updateAccountDetails);
 
         this.router.use((req, res) => {
             res.status(404).json({
