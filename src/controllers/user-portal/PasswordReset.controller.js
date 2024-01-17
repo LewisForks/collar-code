@@ -1,11 +1,24 @@
-const { v4: uuidv4 } = require('uuid');
+const {
+    v4: uuidv4
+} = require('uuid');
 const nodemailer = require('nodemailer');
 const mysql = require('mysql2/promise');
 const dbHelper = require('../../utilities/data/User')
-const { validateResetPasswordInput } = require('./Validation.controller');
-const { decrypt } = require('../../utilities/aes');
-const { executeMysqlQuery } = require('../../utilities/mysqlHelper');
-const { MailerSend, EmailParams, Sender, Recipient } = require('mailersend');
+const {
+    validateResetPasswordInput
+} = require('./Validation.controller');
+const {
+    decrypt
+} = require('../../utilities/aes');
+const {
+    executeMysqlQuery
+} = require('../../utilities/mysqlHelper');
+const {
+    MailerSend,
+    EmailParams,
+    Sender,
+    Recipient
+} = require('mailersend');
 
 require('dotenv').config();
 
@@ -43,7 +56,9 @@ const sendPasswordResetEmail = async (req, res) => {
     console.log(email);
 
     try {
-        const { user_id: _id } = await dbHelper.getUserId(email);
+        const {
+            user_id: _id
+        } = await dbHelper.getUserId(email);
         const resetTokenData = await dbHelper.getResetTokenData(_id);
         if (resetTokenData) {
             const resetTokenCreatedAt = new Date(resetTokenData.created_at).getTime();
@@ -70,21 +85,45 @@ const sendPasswordResetEmail = async (req, res) => {
             }
         }
 
-        const currentUrl = process.env.APP_URL || "http://localhost:3000/";
+        const currentUrl = process.env.APP_URL;
         const expirationTime = 6 * 60 * 60 * 1000; // 6 hr
 
         const token = uuidv4() + _id;
 
+        const userName = dbHelper.getUserName(_id);
+
         const recipient = [
             new Recipient(email, userName)
         ];
+
+        const resetPasswordUrl = `${currentUrl}/account/forgot-password/${_id}/${token}`
+
+        const variables = [{
+            email: email,
+            substitutions: [{
+                var: 'url',
+                value: 'test.com'
+            }],
+        }];
+
+        const personalization = [{
+            email: email,
+            data: {
+                name: '',
+                resetLink: resetPasswordUrl,
+                account_name: 'test',
+                support_email: 'support@test'
+            },
+        }];
 
         const emailParams = new EmailParams()
             .setFrom(sentFrom)
             .setTo(recipient)
             .setReplyTo(sentFrom)
             .setSubject("CollarCode | Reset Your Password")
-            .setHtml(`<p>Click <a href="${currentUrl}account/forgot-password/${_id}/${token}">here</a> to reset your password. This link <b>expires in 6 hours</b>.</p>`)
+            .setTemplateId('7dnvo4dd02r45r86')
+            .setVariables(variables)
+            .setPersonalization(personalization);
 
         const hashedToken = await dbHelper.hashString(token);
 
@@ -117,12 +156,18 @@ const sendPasswordResetEmail = async (req, res) => {
     }
 };
 
-const checkResetToken = async ({ _id, token }) => {
+const checkResetToken = async ({
+    _id,
+    token
+}) => {
     try {
         const result = await dbHelper.getResetTokenData(_id);
         console.log('result from here:', result);
         if (result) {
-            const { expires_at, token: storedToken } = result;
+            const {
+                expires_at,
+                token: storedToken
+            } = result;
 
             if (expires_at < Date.now()) {
 
@@ -183,7 +228,10 @@ const resetPassword = async (req, res) => {
     let token = req.params.token
 
     try {
-        tokenResult = await checkResetToken({ _id, token });
+        tokenResult = await checkResetToken({
+            _id,
+            token
+        });
 
         if (tokenResult.status === "SUCCESS") {
             const validationError = validateResetPasswordInput(password)
