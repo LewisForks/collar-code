@@ -1,24 +1,10 @@
-const {
-    v4: uuidv4
-} = require('uuid');
-const nodemailer = require('nodemailer');
+const { v4: uuidv4 } = require('uuid');
 const mysql = require('mysql2/promise');
 const dbHelper = require('../../utilities/data/User')
-const {
-    validateResetPasswordInput
-} = require('./Validation.controller');
-const {
-    decrypt
-} = require('../../utilities/aes');
-const {
-    executeMysqlQuery
-} = require('../../utilities/mysqlHelper');
-const {
-    MailerSend,
-    EmailParams,
-    Sender,
-    Recipient
-} = require('mailersend');
+const { validateResetPasswordInput } = require('./Validation.controller');
+const { decrypt } = require('../../utilities/aes');
+const { executeMysqlQuery } = require('../../utilities/mysqlHelper');
+const { MailerSend, EmailParams, Sender, Recipient } = require('mailersend');
 
 require('dotenv').config();
 
@@ -27,22 +13,6 @@ const mailerSend = new MailerSend({
 });
 
 const sentFrom = new Sender(process.env.MAILERSEND_EMAIL, process.env.MAILERSEND_NAME)
-
-// let transporter = nodemailer.createTransport({
-//     service: "gmail",
-//     auth: {
-//         user: process.env.AUTH_EMAIL,
-//         pass: process.env.AUTH_PASS,
-//     }
-// });
-
-// transporter.verify((error, success) => {
-//     if (error) {
-//         console.log(error);
-//     } else {
-//         console.log('Ready for emails');
-//     }
-// });
 
 const saveResetTokenData = async (userId, hashedToken, expirationTime) => {
     await executeMysqlQuery(
@@ -56,9 +26,7 @@ const sendPasswordResetEmail = async (req, res) => {
     console.log(email);
 
     try {
-        const {
-            user_id: _id
-        } = await dbHelper.getUserId(email);
+        const { user_id: _id } = await dbHelper.getUserId(email);
         const resetTokenData = await dbHelper.getResetTokenData(_id);
         if (resetTokenData) {
             const resetTokenCreatedAt = new Date(resetTokenData.created_at).getTime();
@@ -90,7 +58,8 @@ const sendPasswordResetEmail = async (req, res) => {
 
         const token = uuidv4() + _id;
 
-        const userName = dbHelper.getUserName(_id);
+        const { name: userName } = await dbHelper.getUserName(_id);
+        console.log(userName);
 
         const recipient = [
             new Recipient(email, userName)
@@ -102,17 +71,17 @@ const sendPasswordResetEmail = async (req, res) => {
             email: email,
             substitutions: [{
                 var: 'url',
-                value: 'test.com'
+                value: 'collarcode.co.uk'
             }],
         }];
 
         const personalization = [{
             email: email,
             data: {
-                name: '',
+                name: userName,
                 resetLink: resetPasswordUrl,
-                account_name: 'test',
-                support_email: 'support@test'
+                account_name: 'CollarCode',
+                support_email: 'support@collarcode.co.uk'
             },
         }];
 
