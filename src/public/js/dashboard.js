@@ -85,6 +85,7 @@ window.onload = function () {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const dateOfBirth = document.getElementById('dateOfBirth').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
 
         fetch('/api/user-portal/update-details', {
             method: 'POST',
@@ -92,7 +93,8 @@ window.onload = function () {
                 name: name,
                 email: email,
                 password: password,
-                dateOfBirth: dateOfBirth
+                dateOfBirth: dateOfBirth,
+                confirmPassword: confirmPassword
             }),
             headers: {
                 'Content-Type': 'application/json',
