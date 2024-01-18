@@ -20,6 +20,14 @@ br {
     height: 1rem;
 }
 
+input.invalid {
+    border-color: red !important;
+}
+
+input.valid {
+    border-color: greenyellow !important;
+}
+
 .container {
     display: grid;
     grid-template-columns: .75fr 3fr 2fr;
