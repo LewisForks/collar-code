@@ -33,6 +33,7 @@
         "node-fetch-commonjs": "^3.3.2",
         "nodemailer": "^6.9.8",
         "nodemon": "^2.0.22",
+        "qrcode": "^1.5.3",
         "rotating-file-stream": "^3.2.1",
         "util": "^0.12.5",
         "uuid": "^9.0.1",
