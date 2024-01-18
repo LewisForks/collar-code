@@ -21,8 +21,7 @@ window.onload = function () {
             .then((response) => response.json())
             .then((data) => {
                 if (data.status === 'SUCCESS') {
-                    const petId = data.petId;
-                    window.location.href = `/pet/${petId}`;
+                    window.location.href = `/dashboard`;
                 } else if (data.status === 'FAILED') {
                     clearErrorMessages();
                     // display any errors
