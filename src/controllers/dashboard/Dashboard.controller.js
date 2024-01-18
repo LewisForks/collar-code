@@ -2,7 +2,7 @@ const session = require("express-session");
 const dbHelper = require('../../utilities/data/User');
 const { decrypt } = require("../../utilities/aes");
 const { executeMysqlQuery } = require("../../utilities/mysqlHelper");
-const { validateSignupInput } = require("../user-portal/Validation.controller");
+const { validateAccountUpdateInput } = require("../user-portal/Validation.controller");
 const qrcode = require('qrcode');
 
 
@@ -41,7 +41,7 @@ const renderDashboard = async (req, res) => {
         petAge: parseInt(pet.petAge),
         qrCodeData: await qrcode.toDataURL(`${currentUrl}/pet/` + pet.pet_id, qrCodeOptions)
     })));
-    
+
 
     console.log(petData);
 
@@ -77,22 +77,46 @@ const updateAccountDetails = async (req, res) => {
         password = password.trim();
         dateOfBirth = dateOfBirth.trim();
         confirmPassword = confirmPassword.trim();
+        const userId = decrypt(req.session.user.userId)
+        const currentHashedPassword = await dbHelper.getHashedPassword(userId)
 
-        const validationError = validateSignupInput(name, email, password, dateOfBirth);
+        if (!confirmPassword) {
+            return res.json({
+                status: "FAILED",
+                errors: {
+                    password: 'Enter Current Password'
+                }
+            });
+        }
+
+        const decryptedPassword = decrypt(currentHashedPassword);
+
+        const validationError = validateAccountUpdateInput(name, email, password, dateOfBirth);
         if (validationError) {
             return res.status(400).json(validationError);
         }
 
-        const hashedPassword = await dbHelper.hashString(password);
+        if (decryptedPassword === confirmPassword) {
+            var hashedPassword = await dbHelper.hashString(password);
 
-        const userId = decrypt(req.session.user.userId)
+            if (!password) {
+                hashedPassword = currentHashedPassword;
+            }
 
-        await updateUser(userId, name, email, hashedPassword, dateOfBirth);
+            await updateUser(userId, name, email, hashedPassword, dateOfBirth);
 
-        res.json({
-            status: "SUCCESS",
-            message: "Account Details Updated"
-        });
+            res.json({
+                status: "SUCCESS",
+                message: "Account Details Updated"
+            });
+        } else {
+            return res.json({
+                status: "FAILED",
+                errors: {
+                    password: 'Incorrect Current Password'
+                }
+            });
+        }
     } catch (err) {
         console.error(err);
         res.json({
