@@ -3,6 +3,7 @@ const dbHelper = require('../../utilities/data/User');
 const { decrypt } = require("../../utilities/aes");
 const { executeMysqlQuery } = require("../../utilities/mysqlHelper");
 const { validateSignupInput } = require("../user-portal/Validation.controller");
+const qrcode = require('qrcode');
 
 
 const renderDashboard = async (req, res) => {
@@ -22,13 +23,25 @@ const renderDashboard = async (req, res) => {
     const petDataResults = await executeMysqlQuery('SELECT * FROM pets WHERE user_id = ?', [userId])
     console.log(petDataResults);
 
-    const petData = petDataResults.map(pet => ({
+    const currentUrl = process.env.APP_URL
+
+    const qrCodeOptions = {
+        color: {
+            dark: '#000000', // Set your desired foreground color
+            light: '#0000'    // Set a transparent background
+        },
+        margin: 1
+    };
+
+    const petData = await Promise.all(petDataResults.map(async pet => ({
         userId: pet.user_id,
         petId: pet.pet_id,
         petName: pet.petName,
         petBreed: pet.petBreed,
-        petAge: parseInt(pet.petAge)
-    }))
+        petAge: parseInt(pet.petAge),
+        qrCodeData: await qrcode.toDataURL(`${currentUrl}/pet/` + pet.pet_id, qrCodeOptions)
+    })));
+    
 
     console.log(petData);
 
@@ -58,11 +71,12 @@ async function updateUser(userId, name, email, password, dateOfBirth) {
 
 const updateAccountDetails = async (req, res) => {
     try {
-        let { name, email, password, dateOfBirth } = req.body;
+        let { name, email, password, dateOfBirth, confirmPassword } = req.body;
         name = name.trim();
         email = email.trim();
         password = password.trim();
         dateOfBirth = dateOfBirth.trim();
+        confirmPassword = confirmPassword.trim();
 
         const validationError = validateSignupInput(name, email, password, dateOfBirth);
         if (validationError) {
