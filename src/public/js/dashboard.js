@@ -49,7 +49,10 @@ window.onload = function () {
         const editBtn = document.getElementById('editBtn');
         const rightDetails = document.getElementsByClassName('right-details')[0];
         const rightDetailsForm = document.getElementsByClassName('right-details-form')[0];
+        const confirmPasswordText = document.getElementById('confirmPasswordText');
 
+
+        confirmPasswordText.style.display = "block";
         rightDetailsForm.style.display = "block";
         rightDetails.style.display = "none";
         submitBtn.style.display = "block";
@@ -64,9 +67,11 @@ window.onload = function () {
         const rightDetails = document.getElementsByClassName('right-details')[0];
         const rightDetailsForm = document.getElementsByClassName('right-details-form')[0];
         const accountDetailsForm = document.getElementById('accountDetailsForm');
+        const confirmPasswordText = document.getElementById('confirmPasswordText');
         clearErrorMessages();
 
         accountDetailsForm.reset();
+        confirmPasswordText.style.display = "none";
         rightDetailsForm.style.display = "none";
         rightDetails.style.display = "flex";
         submitBtn.style.display = "none";
