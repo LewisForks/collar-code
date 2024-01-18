@@ -384,6 +384,7 @@ body {
 
     .header {
         display: flex;
+        position: fixed;
         width: 100%;
         padding: 2rem 10%;
         top: 0;
