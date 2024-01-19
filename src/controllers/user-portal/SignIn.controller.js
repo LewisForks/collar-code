@@ -35,6 +35,7 @@ const handleSignin = async (req, res) => {
         if (userExists) {
             
             const checkVerified = await dbHelper.checkVerified(email);
+            console.log('here', checkVerified)
             if (!checkVerified) {
                 return res.json({
                     status: "FAILED",
@@ -43,9 +44,9 @@ const handleSignin = async (req, res) => {
                     }
                 });
             }
-            const userId = await dbHelper.getUserId(email);
+            const {user_id: userId} = await dbHelper.getUserId(email);
 
-            const hashedPassword = await dbHelper.getHashedPassword(userId);
+            const {password: hashedPassword} = await dbHelper.getHashedPassword(userId);
             const decryptedPassword = decrypt(hashedPassword);
 
             console.log(decryptedPassword);
