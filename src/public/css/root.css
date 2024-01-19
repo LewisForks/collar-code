@@ -372,6 +372,10 @@ body {
 }
 
 @media (max-width: 1050px) {
+    body {
+        margin-top: 70px;
+    }
+
     .heading {
         font-size: 4rem;
         margin-bottom: 1rem;
