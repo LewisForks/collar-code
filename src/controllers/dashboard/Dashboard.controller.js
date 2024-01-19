@@ -7,53 +7,57 @@ const qrcode = require('qrcode');
 
 
 const renderDashboard = async (req, res) => {
-    const sessionInfo = req.session;
-    console.log(sessionInfo);
+    if (req.session && req.session.user) {
+        const sessionInfo = req.session;
+        console.log(sessionInfo);
 
-    const userId = decrypt(req.session.user.userId)
-    const userDataResults = await dbHelper.getUserData(userId);
+        const userId = decrypt(req.session.user.userId)
+        const userDataResults = await dbHelper.getUserData(userId);
 
-    const userData = {
-        userId, userId,
-        name: userDataResults.name,
-        email: userDataResults.email,
-        dob: formatDate(userDataResults.dateOfBirth)
-    }
+        const userData = {
+            userId, userId,
+            name: userDataResults.name,
+            email: userDataResults.email,
+            dob: formatDate(userDataResults.dateOfBirth)
+        }
 
-    const petDataResults = await executeMysqlQuery('SELECT * FROM pets WHERE user_id = ?', [userId])
-    console.log(petDataResults);
+        const petDataResults = await executeMysqlQuery('SELECT * FROM pets WHERE user_id = ?', [userId])
+        console.log(petDataResults);
 
-    const currentUrl = process.env.APP_URL
+        const currentUrl = process.env.APP_URL
 
-    const qrCodeOptions = {
-        color: {
-            dark: '#000000', // Set your desired foreground color
-            light: '#0000'    // Set a transparent background
-        },
-        margin: 1
-    };
+        const qrCodeOptions = {
+            color: {
+                dark: '#000000', // Set your desired foreground color
+                light: '#0000'    // Set a transparent background
+            },
+            margin: 1
+        };
 
-    const petData = await Promise.all(petDataResults.map(async pet => ({
-        userId: pet.user_id,
-        petId: pet.pet_id,
-        petName: pet.petName,
-        petBreed: pet.petBreed,
-        petAge: parseInt(pet.petAge),
-        qrCodeData: await qrcode.toDataURL(`${currentUrl}/pet/` + pet.pet_id, qrCodeOptions)
-    })));
+        const petData = await Promise.all(petDataResults.map(async pet => ({
+            userId: pet.user_id,
+            petId: pet.pet_id,
+            petName: pet.petName,
+            petBreed: pet.petBreed,
+            petAge: parseInt(pet.petAge),
+            qrCodeData: await qrcode.toDataURL(`${currentUrl}/pet/` + pet.pet_id, qrCodeOptions)
+        })));
 
 
-    console.log(petData);
+        console.log(petData);
 
-    res.render('static/dashboard', { userData, petData });
+        res.render('static/dashboard', { userData, petData });
 
-    function formatDate(inputDate) {
-        const date = new Date(inputDate);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
-        const year = date.getFullYear();
+        function formatDate(inputDate) {
+            const date = new Date(inputDate);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+            const year = date.getFullYear();
 
-        return `${year}-${month}-${day}`;
+            return `${year}-${month}-${day}`;
+        }
+    } else {
+        res.redirect('/account/signin?sessionexpired');
     }
 }
 
