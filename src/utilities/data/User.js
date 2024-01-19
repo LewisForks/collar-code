@@ -19,10 +19,12 @@ const checkVerified = async (email) => {
         console.log(rows)
 
         if (rows.length > 0) {
-            const isVerified = rows[0].verified === 1;
-            return isVerified;
+            // const isVerified = rows[0].verified === 1;
+            console.log('true')
+            return true;
         } else {
             // not verified
+            console.log('false')
             return false;
         }
     } catch (error) {
@@ -76,8 +78,9 @@ const getUserName = async (userId) => {
 
 const getHashedPassword = async (userId) => {
     try {
-        const userData = await getUserData(userId);
-        return userData ? userData.password : null;
+        const rows = await executeMysqlQuery('SELECT password from users where user_id = ?', [userId])
+
+        return rows.length > 0 ? rows[0] : 0;
     } catch (error) {
         Logger.error('Error getting hashed password:', error);
         throw error;
