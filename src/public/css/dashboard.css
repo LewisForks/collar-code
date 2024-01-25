@@ -625,6 +625,25 @@ main .contacts .item>i {
     margin-top: 1rem;
 }
 
+.transition-fade {
+    opacity: 1;
+    transition: 500ms;
+    transform: translateX(0);
+}
+
+html.is-changing .transition-fade {
+    transition: opacity 0.25s;
+    opacity: 1;
+  }
+
+html.is-animating .transition-fade {
+    opacity: 1;
+}
+
+html.is-leaving .transition-fade {
+    opacity: 0;
+}
+
 @media screen and (max-width: 1200px) {
 
     .container {

@@ -1,4 +1,4 @@
-window.onload = function () {
+window.onload = function () {     
 
     const menuOpen = document.getElementById('menu-open');
     const menuClose = document.getElementById('menu-close');

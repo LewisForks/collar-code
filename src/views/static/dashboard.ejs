@@ -6,6 +6,10 @@
         <link rel="stylesheet" href="../../public/css/dashboard.css">
         <script src="../../public/js/dashboard.js"></script>
         <script src="../../public/js/forms/formValidation/accountUpdateValidation.js"></script>
+        <script type="module">
+            import Swup from 'https://unpkg.com/swup@4?module';
+            const swup = new Swup();
+        </script>
 </head>
 
 <body>
@@ -28,7 +32,7 @@
                 </div>
                 <div class="item">
                     <i class='bx bx-grid-alt'></i>
-                    <a href="#">Pets</a>
+                    <a href="">Pets</a>
                 </div>
                 <div class="item">
                     <i class='bx bx-folder'></i>
@@ -54,7 +58,7 @@
 
         </aside>
 
-        <main>
+        <main id="swup" class="transition-fade">
             <header>
                 <button class="menu-btn" id="menu-open">
                     <i class='bx bx-menu'></i>
@@ -245,8 +249,6 @@
             </div>
         </aside>
     </div>
-
-    <script src="script.js"></script>
 </body>
 
 </html>
