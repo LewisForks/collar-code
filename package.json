@@ -9,7 +9,7 @@
         "test": "jest",
         "test:detectHandles": "jest --detectOpenHandles"
     },
-    "author": "Lewis Raybould <lewis@raybould.co>, Jack Perry <hello@jackperry.co>",
+    "author": "Lewis Raybould <lewis@raybould.co>",
     "license": "MIT",
     "dependencies": {
         "axios": "^1.6.5",

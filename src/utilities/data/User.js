@@ -35,7 +35,7 @@ const checkVerified = async (email) => {
 
 const getUserData = async (userId) => {
     try {
-        const rows = await executeMysqlQuery('SELECT * FROM users WHERE user_id = ?', [userId]);
+        const rows = await executeMysqlQuery('SELECT * FROM users WHERE user_id = ?', [userId]); // gather all user data from userid
         return rows.length > 0 ? rows[0] : null;
     } catch (error) {
         Logger.error('Error getting user data:', error);
