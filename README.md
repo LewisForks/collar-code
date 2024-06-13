@@ -1,12 +1,28 @@
 # Collar Code 🐶
-A cool app that's in the works, and I'm too lazy to write about it.\
-I'll write the readme later, lol.
 
-## Installing
-In my devenv I use [Laragon Desktop (Full)](https://laragon.org/download) 🐘 to host a MySQL database\
-There's a `setup.sql` file to import the schemas\
-Go to the main root of the project (NOT SRC FOLDER) and run `pnpm install`, it will generate a pnpm lockfile and install the node modules.\
-To update the node modules if they change, use `pnpm update`.
+Collar Code is a web application designed to create and manage pet profiles accessible via QR codes.
+
+## Overview
+
+Collar Code is currently in development, and this README will be updated with more details soon!
+
+## Installation
+
+To set up Collar Code locally:
+
+1. Use Laragon Desktop (Full) 🐘 to host a MySQL database.
+2. Import the database schemas using the `setup.sql` file.
+3. Navigate to the main root of the project (NOT the `src` folder) and run `pnpm install` to generate a lockfile and install the necessary Node.js modules.
+4. If there are updates to the Node.js modules, run `pnpm update` to update them.
 
 ## Running
-Run `pnpm run dev` to launch the app in devmode, building will be done on the serverside so there is no present build command.
+
+To run Collar Code in development mode:
+
+```bash
+pnpm run dev
+```
+
+This command launches the application and performs server-side building as necessary.
+
+Stay tuned for more updates on Collar Code! 🐾
